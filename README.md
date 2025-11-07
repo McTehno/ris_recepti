@@ -1,0 +1,95 @@
+
+#Projekt: Aplikacija za recepte (RIS)
+Ta projekt je spletna aplikacija za upravljanje in deljenje receptov. Sestavljena je iz ločenega zalednega dela (Spring Boot) in sprednjega dela (React).
+
+
+##Dokumentacija za razvijalce
+
+
+Obstajata dva dela:
+
+1)/backend
+-src/main/java/um/si/feri/ris/vaje/app_za_recepti: Glavna izvorna koda Java.
+  controllers: Vsebuje Spring REST krmilnike (npr. ReceptController, UporabnikController), ki definirajo API končne točke.
+  models: Vsebuje JPA entitete (npr. Recept, Sestavina), ki predstavljajo tabele v bazi podatkov.
+  dao: Vsebuje Spring Data JPA repozitorije (npr. ReceptRepository) za dostop do podatkov.
+-pom.xml: Maven datoteka, ki upravlja z odvisnostmi in gradnjo projekta.
+-src/main/resources/application.properties: Konfiguracijska datoteka za Spring Boot (vključno s povezavo do baze podatkov).
+
+2)/my-app: Vsebuje sprednjo (client-side) kodo.
+-public: Vsebuje statične datoteke in index.html.
+-src: Glavna izvorna koda za React.
+  pages: Vsebuje komponente, ki predstavljajo posamezne strani (npr. Domov.js, VsiRecepti.js).
+  services/api.js: Vsebuje logiko za komunikacijo z zalednim API-jem (verjetno z uporabo knjižnice axios).
+  App.js: Glavna komponenta aplikacije, ki skrbi za usmerjanje (routing).
+-package.json: Datoteka, ki upravlja z odvisnostmi (npm) in skriptami za sprednji del.
+
+
+Uporabljena orodja, frameworki in različice:
+
+1)Backend
+-Java (Jezik)
+-Spring Boot (REST API)
+-Spring Data JPA (Dostop do podatkovne baze)
+-Maven (Upravljanje odvisnosti in gradnja jave)
+-MySQL (Docker podatkovna baza)
+
+2)Frontend
+-React (UI)
+-React Router (Navigacina)
+-Axios (backend komunikacija skozi HTTP)
+-Node.js (Okolje in packet manager za JavaScript)
+
+3)Docker (zagon MySQL baze)
+
+
+Standardi kodiranja:
+
+Java in Spring Boot - Razredi PascalCase, metode in spremenljivke camelCase.
+
+React in JavaScript - Komponente PascalCase, ostali JS camelCase.
+
+
+##Nameščanje
+
+Rabite Docker, Npm (node.js), Java JDK 23 (ali visje) in Apache Maven.
+
+Koraki:
+
+1)Zagon podatkovne baze (Docker)
+V terminalu zaženite naslednji ukaz, da ustvarite in zaženete Docker vsebnik z MySQL bazo:
+
+docker run -d --name ris-mysql-db -p 3369:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ris mysql:latest
+
+2)Namestitev odvisnosti za sprednji del (Frontend)
+Pomaknite se v mapo my-app in namestite potrebne npm pakete:
+
+npm install
+
+3)Zagon zalednega dela (Backend)
+Odprite nov terminal. Pomaknite se v mapo backend in zaženite Spring Boot aplikacijo z Mavenom:
+
+./mvnw.cmd spring-boot:run
+
+4)Zagon sprednjega dela (Frontend)
+V terminalu, kjer ste v mapi my-app (iz koraka 2), zaženite React razvojni strežnik:
+
+npm start
+
+
+##Za razvijalce
+
+Če želite pristopati projektu:
+1)Naredite Fork projekta.
+
+2)Ustvarite novo vejo (Branch), kjer boste delali na projektu:
+
+git checkout -b ime-vase-funkcionalnosti
+
+3)Svoje spremembe commit-ajte in dodajte (add), in potem potisnite (push) na svojo vejo:
+
+git add spremenjene-datoteke (ali . za vse)
+git commit -m "jasno sporočilo o spremembi"
+git push origin ime-vase-funkcionalnosti
+ 
+4)Nardite Pull Request na GitHub-u z opisom in razlagom sprememb vaše veje (`ime-vase-nove-funkcionalnosti`) v glavno vejo originalnega projekta (main), potem pa čakajte na odgovor.
