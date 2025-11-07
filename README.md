@@ -1,7 +1,7 @@
 
 #Projekt: Aplikacija za recepte (RIS)
-Ta projekt je spletna aplikacija za upravljanje in deljenje receptov. Sestavljena je iz ločenega zalednega dela (Spring Boot) in sprednjega dela (React).
-
+Ta rešitev omogoča uporabnikom enostavno ustvarjanje, iskanje, urejanje in brisanje lastnih receptov, vključno z dinamičnim upravljanjem sestavin. 
+Celoten sistem deluje kot moderna digitalna kuharska knjiga, ki povezuje ljudje skozi recepte.
 
 ##Dokumentacija za razvijalce
 
@@ -49,8 +49,16 @@ Java in Spring Boot - Razredi PascalCase, metode in spremenljivke camelCase.
 
 React in JavaScript - Komponente PascalCase, ostali JS camelCase.
 
+Osnovni paket aplikacije je um.si.feri.ris.vaje.app_za_recepti. Znotraj tega paketa se nahaja:
+AppZReceptiApplication.java: To je glavna vstopna točka (entry point) aplikacije. Ta datoteka vsebuje main metodo, ki zažene celotno Spring Boot aplikacijo.
 
-##Nameščanje
+Struktura je nato razdeljena na naslednje ključne pod-pakete:
+/models: Ta paket vsebuje podatkovne modele (entitete). To so Java razredi (POJO), ki z anotacijami @Entity predstavljajo strukturo tabel v podatkovni bazi. Po vaši konvenciji se imenujejo Ime.java (npr. Recept.java, Uporabnik.java in Sestavina.java).
+/dao (Data Access Object): Tukaj so definirani vmesniki (Repositories) za dostop do podatkov. Ti vmesniki, ki sledijo vaši konvenciji ImeVmesnikaRepository.java (npr. ReceptRepository.java), razširjajo Spring Data JPA vmesnike (kot je CrudRepository) in s tem avtomatizirajo izvajanje SQL poizvedb.
+/controllers: Ta paket vsebuje krmilnike (Controllers), ki definirajo REST API vmesnik vaše aplikacije. Vsak krmilnik, poimenovan po vzorcu ImeController.java (npr. ReceptController.java), z anotacijami, kot je @RestController, sprejema HTTP zahteve, komunicira s poslovno logiko (ali neposredno z repozitoriji) in vrača odgovore odjemalcu (npr. v formatu JSON).
+
+
+##Tehnologije in verzije
 
 Rabite Docker, Npm (node.js), Java JDK 23 (ali visje) in Apache Maven.
 
