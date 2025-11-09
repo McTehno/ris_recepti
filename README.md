@@ -20,7 +20,7 @@ Obstajata dva dela:
 -public: Vsebuje statične datoteke in index.html.
 -src: Glavna izvorna koda za React.
   pages: Vsebuje komponente, ki predstavljajo posamezne strani (npr. Domov.js, VsiRecepti.js).
-  services/api.js: Vsebuje logiko za komunikacijo z zalednim API-jem (verjetno z uporabo knjižnice axios).
+  services/api.js: Vsebuje logiko za komunikacijo z zalednim API-jem (z uporabo knjižnice axios).
   App.js: Glavna komponenta aplikacije, ki skrbi za usmerjanje (routing).
 -package.json: Datoteka, ki upravlja z odvisnostmi (npm) in skriptami za sprednji del.
 
@@ -36,7 +36,7 @@ Uporabljena orodja, frameworki in različice:
 
 2)Frontend
 -React (UI)
--React Router (Navigacina)
+-React Router (Navigacija)
 -Axios (backend komunikacija skozi HTTP)
 -Node.js (Okolje in packet manager za JavaScript)
 
@@ -52,15 +52,15 @@ React in JavaScript - Komponente PascalCase, ostali JS camelCase.
 Osnovni paket aplikacije je um.si.feri.ris.vaje.app_za_recepti. Znotraj tega paketa se nahaja:
 AppZReceptiApplication.java: To je glavna vstopna točka (entry point) aplikacije. Ta datoteka vsebuje main metodo, ki zažene celotno Spring Boot aplikacijo.
 
-Struktura je nato razdeljena na naslednje ključne pod-pakete:
-/models: Ta paket vsebuje podatkovne modele (entitete). To so Java razredi (POJO), ki z anotacijami @Entity predstavljajo strukturo tabel v podatkovni bazi. Po vaši konvenciji se imenujejo Ime.java (npr. Recept.java, Uporabnik.java in Sestavina.java).
-/dao (Data Access Object): Tukaj so definirani vmesniki (Repositories) za dostop do podatkov. Ti vmesniki, ki sledijo vaši konvenciji ImeVmesnikaRepository.java (npr. ReceptRepository.java), razširjajo Spring Data JPA vmesnike (kot je CrudRepository) in s tem avtomatizirajo izvajanje SQL poizvedb.
-/controllers: Ta paket vsebuje krmilnike (Controllers), ki definirajo REST API vmesnik vaše aplikacije. Vsak krmilnik, poimenovan po vzorcu ImeController.java (npr. ReceptController.java), z anotacijami, kot je @RestController, sprejema HTTP zahteve, komunicira s poslovno logiko (ali neposredno z repozitoriji) in vrača odgovore odjemalcu (npr. v formatu JSON).
+Struktura je nato razdeljena na naslednje ključne podpakete:
+/models: Ta paket vsebuje podatkovne modele (entitete). To so Java razredi (POJO), ki z anotacijami @Entity predstavljajo strukturo tabel v podatkovni bazi. Po naši konvenciji se imenujejo Ime.java (npr. Recept.java, Uporabnik.java in Sestavina.java).
+/dao (Data Access Object): Tukaj so definirani vmesniki (Repositories) za dostop do podatkov. Ti vmesniki, ki sledijo naši konvenciji ImeVmesnikaRepository.java (npr. ReceptRepository.java), razširjajo Spring Data JPA vmesnike (kot je CrudRepository) in s tem avtomatizirajo izvajanje SQL poizvedb.
+/controllers: Ta paket vsebuje krmilnike (Controllers), ki definirajo REST API vmesnik naše aplikacije. Vsak krmilnik, poimenovan po vzorcu ImeController.java (npr. ReceptController.java), z anotacijami, kot je @RestController, sprejema HTTP zahteve, komunicira s poslovno logiko (ali neposredno z repozitoriji) in vrača odgovore odjemalcu (npr. v formatu JSON).
 
 
 ##Tehnologije in verzije
 
-Rabite Docker, Npm (node.js), Java JDK 23 (ali visje) in Apache Maven.
+Potrebujete Docker, Npm (node.js), Java JDK 23 (ali visje) in Apache Maven.
 
 Koraki:
 
@@ -87,7 +87,7 @@ npm start
 
 ##Za razvijalce
 
-Če želite pristopati projektu:
+Če želite prispevati k projektu:
 1)Naredite Fork projekta.
 
 2)Ustvarite novo vejo (Branch), kjer boste delali na projektu:
@@ -100,4 +100,4 @@ git add spremenjene-datoteke (ali . za vse)
 git commit -m "jasno sporočilo o spremembi"
 git push origin ime-vase-funkcionalnosti
  
-4)Nardite Pull Request na GitHub-u z opisom in razlagom sprememb vaše veje (`ime-vase-nove-funkcionalnosti`) v glavno vejo originalnega projekta (main), potem pa čakajte na odgovor.
+4)Naredite Pull Request na GitHub-u z opisom in razlago sprememb vaše veje (`ime-vase-nove-funkcionalnosti`) v glavno vejo originalnega projekta (main), potem pa čakajte na odgovor.
