@@ -1,9 +1,9 @@
 
-#Projekt: Aplikacija za recepte (RIS)
+# Projekt: Aplikacija za recepte (RIS)
 Ta rešitev omogoča uporabnikom enostavno ustvarjanje, iskanje, urejanje in brisanje lastnih receptov, vključno z dinamičnim upravljanjem sestavin. 
 Celoten sistem deluje kot moderna digitalna kuharska knjiga, ki povezuje ljudje skozi recepte.
 
-##Dokumentacija za razvijalce
+## Dokumentacija za razvijalce
 
 
 Obstajata dva dela:
@@ -58,7 +58,7 @@ Struktura je nato razdeljena na naslednje ključne podpakete:
 /controllers: Ta paket vsebuje krmilnike (Controllers), ki definirajo REST API vmesnik naše aplikacije. Vsak krmilnik, poimenovan po vzorcu ImeController.java (npr. ReceptController.java), z anotacijami, kot je @RestController, sprejema HTTP zahteve, komunicira s poslovno logiko (ali neposredno z repozitoriji) in vrača odgovore odjemalcu (npr. v formatu JSON).
 
 
-##Tehnologije in verzije
+## Tehnologije in verzije
 
 Potrebujete Docker, Npm (node.js), Java JDK 23 (ali visje) in Apache Maven.
 
@@ -85,7 +85,7 @@ V terminalu, kjer ste v mapi my-app (iz koraka 2), zaženite React razvojni stre
 npm start
 
 
-##Za razvijalce
+## Za razvijalce
 
 Če želite prispevati k projektu:
 1)Naredite Fork projekta.
