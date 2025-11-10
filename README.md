@@ -27,18 +27,18 @@ Obstajata dva dela:
 
 ## Uporabljena orodja, frameworki in različice:
 
-**1)Backend**
--Java (Jezik)
--Spring Boot (REST API)
--Spring Data JPA (Dostop do podatkovne baze)
--Maven (Upravljanje odvisnosti in gradnja jave)
--MySQL (Docker podatkovna baza)
-
-**2)Frontend**
--React (UI)
--React Router (Navigacija)
--Axios (backend komunikacija skozi HTTP)
--Node.js (Okolje in packet manager za JavaScript)
+**1)Backend**  
+-Java 23 (Jezik)  
+-Spring Boot 3.5.6 (REST API)  
+-Spring Data JPA 3.5.6 (Dostop do podatkovne baze)  
+-Maven 3.9.11 (Upravljanje odvisnosti in gradnja jave)  
+-MySQL latest (Docker podatkovna baza)  
+ 
+**2)Frontend**  
+-React 19.2.0 (UI)  
+-React Router 7.9.4 (Navigacija)  
+-Axios 1.12.2 (backend komunikacija skozi HTTP)  
+-Node.js (Okolje in packet manager za JavaScript)  
 
 **3)Docker (zagon MySQL baze)**
 
