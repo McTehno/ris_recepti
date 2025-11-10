@@ -103,12 +103,16 @@ npm start
 
 **2)Ustvarite novo vejo (Branch)**, kjer boste delali na projektu:
 
+```bash
 git checkout -b ime-vase-funkcionalnosti
+```
 
 **3)Svoje spremembe commit-ajte in dodajte (add), in potem potisnite (push) na svojo vejo**:
 
+```bash
 git add spremenjene-datoteke (ali . za vse)
 git commit -m "jasno sporočilo o spremembi"
 git push origin ime-vase-funkcionalnosti
- 
+```
+
 **4)Naredite Pull Request na GitHub-u z opisom in razlago sprememb vaše veje (`ime-vase-nove-funkcionalnosti`) v glavno vejo originalnega projekta (main), potem pa čakajte na odgovor.**
