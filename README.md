@@ -1,7 +1,10 @@
 
 # Projekt: Aplikacija za recepte (RIS)
-Ta rešitev omogoča uporabnikom enostavno ustvarjanje, iskanje, urejanje in brisanje lastnih receptov, vključno z dinamičnim upravljanjem sestavin. 
-Celoten sistem deluje kot moderna digitalna kuharska knjiga, ki povezuje ljudje skozi recepte.
+Ste naveličani iskanja receptov po listkih, starih zvezkih in neštetih spletnih zaznamkih?
+
+Naša vizija je ustvariti moderno in intuitivno digitalno kuharsko knjigo, ki postane vaš osrednji kulinarični center. Aplikacija omogoča enostavno ustvarjanje, iskanje, urejanje in brisanje lastnih receptov, vključno z dinamičnim upravljanjem sestavin.
+
+Namenjena je vsem domačim kuharjem, ki želijo svoje kulinarične ideje organizirati na enem mestu in tako ponovno obuditi veselje do kuhanja. Verjamemo, da hrana povezuje, in naša aplikacija je orodje, ki vam pri tem pomaga.
 
 ## Dokumentacija za razvijalce
 
