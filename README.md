@@ -43,6 +43,24 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 * Možnosti urejanja tujih receptov ali komentarjev (razen s strani Admina).
 
 
+## Slovar pojmov
+
+| Izraz               | Definicija |
+|---------------------|-----------|
+| **Moji recepti**    | Informacijska rešitev – naziv spletne aplikacije. |
+| **Recept**          | Strukturiran zapis postopka priprave jedi, ki vsebuje ime jedi, tip jedi, opis priprave ter seznam potrebnih sestavin. Recept je ustvarjen in lastniško povezan z enim uporabnikom ter ima shranjen datum nastanka in oceno. |
+| **Sestavina**       | Sestavni del recepta – posamezna surovina ali izdelek (npr. moka, jajce, mleko), ki se uporablja pri pripravi jedi. Vsaka sestavina pripada točno enemu receptu. |
+| **Priprava**        | Posamezni koraki oziroma postopek za izvedbo jedi. |
+| **Tip**             | Kategorija, v katero recept spada. Uporabnik izbira med že določenimi kategorijami, npr. *sladice*, *kosilo*, *na hitro*. |
+| **Ocena**           | Povprečna ocena recepta, izračunana iz posamičnih ocen uporabnikov. |
+| **Datum ustvarjanja** | Datum (format: leto–mesec–dan), ko uporabnik ustvari recept. |
+| **Komentar**        | Zapis, ki ga uporabnik doda k receptu kot povratno informacijo, mnenje ali vprašanje. Komentar je vedno povezan z enim receptom in enim uporabnikom ter vsebuje vsebino komentarja, datum/čas objave in podatke o avtorju (uporabniku). |
+| **Uporabnik**       | Oseba, ki ima v sistemu ustvarjen uporabniški račun in se vanj prijavlja z e-poštnim naslovom in geslom. Uporabnik lahko pregleduje recepte, ustvarja nove recepte, upravlja svoje recepte (jih ureja in briše) ter recepte komentira. Vsak recept ima natanko enega lastnika – uporabnika, uporabnik pa ima lahko nič, enega ali več receptov. |
+| **Administrator**   | Pooblaščena oseba z razširjenimi pravicami v sistemu. Administrator ima pregled nad uporabniškimi računi ter upravlja uporabniške recepte (jih lahko ureja in briše) in uporabniške komentarje (npr. briše neprimerne komentarje). |
+| **Filtiranje receptov** | Uporabnik lahko recepte filtrira po nazivu recepta (iskanje po imenu), tipu/kategoriji (npr. predjed, sladica, glavna jed) ter oceni. Rezultat filtriranja je seznam receptov, ki izpolnjujejo izbrane pogoje. |
+
+
+
 ## Dokumentacija za razvijalce
 
 
