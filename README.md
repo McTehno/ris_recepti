@@ -1,10 +1,50 @@
 
 # Projekt: Aplikacija za recepte (RIS)
-Ste naveličani iskanja receptov po listkih, starih zvezkih in neštetih spletnih zaznamkih?
+## Poslovni Problem in Rešitev
+### Problem
+Domači kuharji imajo svoje recepte pogosto shranjene na fizičnih listkih, v različnih zvezkih ali kot neorganizirane digitalne zaznamke. Ta razpršenost vodi v podvajanje in izgubo receptov ter zmanjšuje veselje do kuhanja.
+### Rešitev
+Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabnikom omogoča digitalno shranjevanje, kategorizacijo in hitro iskanje lastne zbirke receptov. Poleg upravljanja zasebne zbirke sistem omogoča tudi **brskanje, ocenjevanje in komentiranje** javno dostopnih receptov ostalih uporabnikov.
 
-Naša vizija je ustvariti moderno in intuitivno digitalno kuharsko knjigo, ki postane vaš osrednji kulinarični center. Aplikacija omogoča enostavno ustvarjanje, iskanje, urejanje in brisanje lastnih receptov, vključno z dinamičnim upravljanjem sestavin.
+## Ključne Funkcionalnosti
 
-Namenjena je vsem domačim kuharjem, ki želijo svoje kulinarične ideje organizirati na enem mestu in tako ponovno obuditi veselje do kuhanja. Verjamemo, da hrana povezuje, in naša aplikacija je orodje, ki vam pri tem pomaga.
+* **Upravljanje z uporabniki:**
+    * Registracija novega uporabnika.
+    * Prijava in avtentikacija za dostop do osebne zbirke.
+* **Upravljanje z recepti:**
+    * Kreiranje novega recepta z vnosom naziva, opisa, postopka priprave in časa kuhanja.
+    * Pregledovanje seznama vseh lastnih receptov.
+    * Prikaz podrobnosti posameznega recepta.
+    * Urejanje in brisanje obstoječih receptov.	
+* **Upravljanje s sestavinami:**
+    * Dinamično dodajanje, urejanje in brisanje sestavin.
+* **Socialne Funkcionalnosti:**
+    * Brskanje po javni zbirki *vseh* receptov.
+    * Ocenjevanje receptov.
+    * Komentiranje receptov.
+* **Upravljanje Uporabnikov:**
+    * Admin ima dostop do seznama vseh registriranih uporabnikov.
+    * Admin ima možnost brisanja kateregakoli uporabnika.
+* **Upravljanje Receptov:**
+    * Admin ima možnost brisanja *kateregakoli* recepta.
+* **Upravljanje Komentarjev:**
+    * Admin ima možnost brisanja *kateregakoli* komentarja kateregakoli uporabnika.
+
+## Meje Rešitve (Obseg)
+
+### Kaj je vključeno:
+* Sistem je namenjen osebni, zasebni zbirki receptov.
+* Uporabnik vidi in upravlja izključno svoje vnose.
+* Vnos podatkov je ročen.
+* Sistem omogoča javno brskanje, komentiranje in ocenjevanje drugih receptov.
+* Sistem vključuje ločen administratorski vmesnik (ali administratorske funkcije znotraj obstoječega vmesnika) za upravljanje vsebin in uporabnikov.
+
+### Česa ni vključeno:
+* Naročanje hrane.
+* Naprednih funkcij (npr. AI chatbot).
+* Medsebojnega sledenja uporabnikov ali naprednega socialnega omrežja.
+* Možnosti urejanja tujih receptov ali komentarjev (razen s strani Admina).
+
 
 ## Dokumentacija za razvijalce
 
