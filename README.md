@@ -8,9 +8,6 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 
 ## Ključne Funkcionalnosti
 
-* **Upravljanje z uporabniki:**
-    * Registracija novega uporabnika.
-    * Prijava in avtentikacija za dostop do osebne zbirke.
 * **Upravljanje z recepti:**
     * Kreiranje novega recepta z vnosom naziva, opisa, postopka priprave in časa kuhanja.
     * Pregledovanje seznama vseh lastnih receptov.
