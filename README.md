@@ -59,7 +59,8 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 | **Administrator**   | Pooblaščena oseba z razširjenimi pravicami v sistemu. Administrator ima pregled nad uporabniškimi računi ter upravlja uporabniške recepte (jih lahko ureja in briše) in uporabniške komentarje (npr. briše neprimerne komentarje). |
 | **Filtiranje receptov** | Uporabnik lahko recepte filtrira po nazivu recepta (iskanje po imenu), tipu/kategoriji (npr. predjed, sladica, glavna jed) ter oceni. Rezultat filtriranja je seznam receptov, ki izpolnjujejo izbrane pogoje. |
 
-
+## Diagram primerov uporabe
+![Diagram primerov uporabe](./DPU_ris.png)
 
 ## Dokumentacija za razvijalce
 
