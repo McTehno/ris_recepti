@@ -66,21 +66,22 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 
 Obstajata dva dela:
 
-**1)/backend**
--src/main/java/um/si/feri/ris/vaje/app_za_recepti: Glavna izvorna koda Java.
-  controllers: Vsebuje Spring REST krmilnike (npr. ReceptController, UporabnikController), ki definirajo API končne točke.
-  models: Vsebuje JPA entitete (npr. Recept, Sestavina), ki predstavljajo tabele v bazi podatkov.
-  dao: Vsebuje Spring Data JPA repozitorije (npr. ReceptRepository) za dostop do podatkov.
--pom.xml: Maven datoteka, ki upravlja z odvisnostmi in gradnjo projekta.
--src/main/resources/application.properties: Konfiguracijska datoteka za Spring Boot (vključno s povezavo do baze podatkov).
+**1) /backend**
+- `src/main/java/um/si/feri/ris/vaje/app_za_recepti`: Glavna izvorna koda Java.
+  - `controllers`: Vsebuje Spring REST krmilnike (npr. `ReceptController`, `UporabnikController`), ki definirajo API končne točke.
+  - `models`: Vsebuje JPA entitete (npr. `Recept`, `Sestavina`), ki predstavljajo tabele v bazi podatkov.
+  - `dao`: Vsebuje Spring Data JPA repozitorije (npr. `ReceptRepository`) za dostop do podatkov.
+- `pom.xml`: Maven datoteka, ki upravlja z odvisnostmi in gradnjo projekta.
+- `src/main/resources/application.properties`: Konfiguracijska datoteka za Spring Boot (vključno s povezavo do baze podatkov).
 
-**2)/my-app**: Vsebuje sprednjo (client-side) kodo.
--public: Vsebuje statične datoteke in index.html.
--src: Glavna izvorna koda za React.
-  pages: Vsebuje komponente, ki predstavljajo posamezne strani (npr. Domov.js, VsiRecepti.js).
-  services/api.js: Vsebuje logiko za komunikacijo z zalednim API-jem (z uporabo knjižnice axios).
-  App.js: Glavna komponenta aplikacije, ki skrbi za usmerjanje (routing).
--package.json: Datoteka, ki upravlja z odvisnostmi (npm) in skriptami za sprednji del.
+**2) /my-app**: Vsebuje sprednjo (client-side) kodo.
+- `public`: Vsebuje statične datoteke in index.html.
+- `src`: Glavna izvorna koda za React.
+  - `pages`: Vsebuje komponente, ki predstavljajo posamezne strani (npr. `Domov.js`, `VsiRecepti.js`).
+  - `services/api.js`: Vsebuje logiko za komunikacijo z zalednim API-jem (z uporabo knjižnice `axios`).
+  - `App.js`: Glavna komponenta aplikacije, ki skrbi za usmerjanje (routing).
+- `package.json`: Datoteka, ki upravlja z odvisnostmi (npm) in skriptami za sprednji del.
+
 
 
 ## Uporabljena orodja, frameworki in različice:
