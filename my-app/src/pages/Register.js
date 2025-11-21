@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../services/api';
 import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
 
-function Login() {
+function Register() {
   const [podatki, setPodatki] = useState({
+    ime: '',
+    priimek: '',
     enaslov: '',
     geslo: ''
   });
@@ -20,22 +21,14 @@ function Login() {
     e.preventDefault();
     setError('');
     
-    try {
-      // Simulacija klica - prilagodite endpoint glede na backend
-      // const response = await api.post('/uporabniki/login', podatki);
-      console.log("Podatki za prijavo:", podatki);
-      
-      // Začasna rešitev za testiranje (dokler ni backend login endpointa):
-      // Preusmerimo na domov, če sta polji izpolnjeni
-      if (podatki.enaslov && podatki.geslo) {
-         navigate('/');
-      } else {
-         setError('Prosim izpolnite vsa polja.');
-      }
-      
-    } catch (err) {
-      console.error("Napaka pri prijavi:", err);
-      setError('Napaka pri prijavi. Preverite e-naslov in geslo.');
+    // Simulacija registracije (kasneje povežemo z API)
+    console.log("Podatki za registracijo:", podatki);
+    
+    if (podatki.ime && podatki.priimek && podatki.enaslov && podatki.geslo) {
+        // Tukaj bi bil klic: await api.post('/uporabniki/post', podatki);
+        navigate('/login'); 
+    } else {
+        setError('Prosim izpolnite vsa polja.');
     }
   };
 
@@ -43,7 +36,7 @@ function Login() {
     <Container maxWidth="sm">
       <div className="login-container">
         <Typography component="h1" variant="h5">
-          Prijava
+          Registracija
         </Typography>
         
         <Box component="form" onSubmit={handleSubmit} className="login-form-box">
@@ -53,11 +46,33 @@ function Login() {
             margin="normal"
             required
             fullWidth
+            id="ime"
+            label="Ime"
+            name="ime"
+            autoFocus
+            value={podatki.ime}
+            onChange={handleChange}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="priimek"
+            label="Priimek"
+            name="priimek"
+            value={podatki.priimek}
+            onChange={handleChange}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="enaslov"
             label="E-naslov"
             name="enaslov"
             autoComplete="email"
-            autoFocus
             value={podatki.enaslov}
             onChange={handleChange}
           />
@@ -70,7 +85,7 @@ function Login() {
             label="Geslo"
             type="password"
             id="geslo"
-            autoComplete="current-password"
+            autoComplete="new-password"
             value={podatki.geslo}
             onChange={handleChange}
           />
@@ -81,21 +96,19 @@ function Login() {
             variant="contained"
             className="login-submit-btn"
           >
-            Prijavi se
+            Ustvari račun
           </Button>
 
           <div className="auth-switch-container">
-            <span>Še nimate računa?</span>
-            <Link to="/register" className="auth-link">
-              Registrirajte se
+            <span>Že imate račun?</span>
+            <Link to="/login" className="auth-link">
+              Prijavite se
             </Link>
           </div>
-
-          
         </Box>
       </div>
     </Container>
   );
 }
 
-export default Login;
+export default Register;

@@ -1,5 +1,8 @@
 import React from 'react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { IconButton } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 import './App.css';
 import Domov from './pages/Domov';
 import VsiRecepti from './pages/VsiRecepti';
@@ -7,8 +10,8 @@ import MojiRecepti from './pages/MojiRecepti';
 import ReceptPodrobnosti from './pages/ReceptPodrobnosti';
 import ReceptForm from './pages/ReceptForm';
 import Login from './pages/Login';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { IconButton } from '@mui/material';
+import Register from './pages/Register'; 
+
 
 function App() {
   return (
@@ -37,6 +40,7 @@ function App() {
           <Route path="/recept/:id/edit" element={<ReceptForm />} /> {/* editiranje recept */}
           <Route path="/recept/:id" element={<ReceptPodrobnosti />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
 
       </main>

@@ -455,3 +455,22 @@ div.search-container button:hover {
   background-color: rgba(255, 255, 255, 0.2); /* Rahel odsev na hover v navbaru */
   border-radius: 50%;
 }
+
+/* --- Auth Switch (Login/Register toggle) --- */
+.auth-switch-container {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-link {
+  color: #ffb347;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #ff7043;
+  text-decoration: underline;
+}
