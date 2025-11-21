@@ -1,6 +1,7 @@
 package um.si.feri.ris.vaje.app_za_recepti.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +35,7 @@ public class Recept {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uporabnik_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore  //za sega go ignorirame
+    @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker uporabnik vsebuje objekt tipa recept
     private Uporabnik uporabnik;
 
 
@@ -44,6 +45,7 @@ public class Recept {
     }
 
     @OneToMany(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker sestavina vsebuje objekt tipa recept
     private List<Sestavina> sestavine;
 
 }

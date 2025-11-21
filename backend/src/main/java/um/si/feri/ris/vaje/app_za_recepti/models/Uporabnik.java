@@ -1,6 +1,7 @@
 package um.si.feri.ris.vaje.app_za_recepti.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class Uporabnik {
     private String geslo;
 
     @OneToMany(mappedBy = "uporabnik", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonIgnoreProperties("uporabnik") //trj to se uporablja da se izognemo infinite loopu (ker uporabnik kaze na recept ki kaze na uporabnika ki kaze na recept...), in potem ko shranjujemo recept, shranimo vse razen objekta tipa uporabnik.
     private List<Recept> recepti;
 
 }
