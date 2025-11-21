@@ -21,21 +21,32 @@ function Login() {
     setError('');
     
     try {
-      // Simulacija klica - prilagodite endpoint glede na backend
-      // const response = await api.post('/uporabniki/login', podatki);
-      console.log("Podatki za prijavo:", podatki);
-      
-      // Začasna rešitev za testiranje (dokler ni backend login endpointa):
-      // Preusmerimo na domov, če sta polji izpolnjeni
       if (podatki.enaslov && podatki.geslo) {
-         navigate('/');
+          // Klic na backend za prijavo
+          const response = await api.post('/uporabniki/login', podatki);
+          
+          console.log("Uspešna prijava:", response.data);
+
+          // Shranimo ID uporabnika v sessionStorage
+          // response.data je objekt Uporabnik, ki smo ga vrnili iz controllerja
+          sessionStorage.setItem('userId', response.data.id);
+          
+          // Preusmerimo na domov
+          navigate('/');
       } else {
          setError('Prosim izpolnite vsa polja.');
       }
       
     } catch (err) {
       console.error("Napaka pri prijavi:", err);
-      setError('Napaka pri prijavi. Preverite e-naslov in geslo.');
+      // Preverimo, če je backend vrnil specifično napako
+      if (err.response && err.response.status === 401) {
+          setError('Napačno geslo.');
+      } else if (err.response && err.response.status === 404) {
+          setError('Uporabnik s tem e-naslovom ne obstaja.');
+      } else {
+          setError('Napaka pri prijavi. Preverite e-naslov in geslo.');
+      }
     }
   };
 

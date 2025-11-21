@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
+import api from '../services/api';
 
 function Register() {
   const [podatki, setPodatki] = useState({
@@ -21,15 +22,20 @@ function Register() {
     e.preventDefault();
     setError('');
     
-    // Simulacija registracije (kasneje povežemo z API)
-    console.log("Podatki za registracijo:", podatki);
-    
     if (podatki.ime && podatki.priimek && podatki.enaslov && podatki.geslo) {
-        // Tukaj bi bil klic: await api.post('/uporabniki/post', podatki);
-        navigate('/login'); 
+        try {
+            // Klic na backend za registracijo
+            await api.post('/uporabniki/post', podatki);
+            // Uspesna registracija pa preusmeritev na login
+            navigate('/login'); 
+        } catch (err) {
+            console.error("Napaka pri registraciji:", err);
+            setError('Napaka pri registraciji. Poskusite znova.');
+        }
     } else {
         setError('Prosim izpolnite vsa polja.');
     }
+  
   };
 
   return (

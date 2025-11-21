@@ -1,6 +1,8 @@
 package um.si.feri.ris.vaje.app_za_recepti.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
@@ -25,6 +27,23 @@ public class UporabnikController {
 
         return uporabnikRepository.save(uporabnik);
 
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Uporabnik loginPodatki) {
+        // Poišcemo uporabnika po enaslovu
+        Optional<Uporabnik> uporabnik = uporabnikRepository.findByEnaslov(loginPodatki.getEnaslov());
+
+        if (uporabnik.isPresent()) {
+            // Preverimo geslo
+            if (uporabnik.get().getGeslo().equals(loginPodatki.getGeslo())) {
+                return ResponseEntity.ok(uporabnik.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Napačno geslo");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Uporabnik ne obstaja");
+        }
     }
 
     // Gi pridobivam site korisnici vo List
