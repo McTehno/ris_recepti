@@ -59,7 +59,7 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 | **Administrator**   | Pooblaščena oseba z razširjenimi pravicami v sistemu. Administrator ima pregled nad uporabniškimi računi ter upravlja uporabniške recepte (jih lahko ureja in briše) in uporabniške komentarje (npr. briše neprimerne komentarje). |
 
 ## Diagram primerov uporabe
-![Diagram primerov uporabe](./dokumentacija/DPU_ris.png)
+![Diagram primerov uporabe](./dokumentacija/RIS DPU.png)
 
 ## Dokumentacija za razvijalce
 
