@@ -22,7 +22,7 @@ public class Sestavina {
     @ManyToOne
     @JoinColumn(name = "recept_id") // tocna kolona vo tabelata Recept sto go cuva id-to od korisnikot
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    @JsonIgnore //спречува infinite recursion кога ќе се сереализира Uporabnik во JSON.
     private Recept recept;
 
 }
