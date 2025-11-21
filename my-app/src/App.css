@@ -411,4 +411,47 @@ div.search-container button:hover {
   background-color: #45a049;
 }
 
+/* --- Login Page Styles --- */
+.login-container {
+  margin-top: 4rem; /* Ustreza marginam v designu */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.login-form-box {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.login-alert {
+  margin-bottom: 1rem;
+}
+
+.login-submit-btn {
+  margin-top: 1.5rem !important; /* !important povozi MUI default margine če je potrebno */
+  margin-bottom: 1rem !important;
+  background-color: #ffb347 !important; /* Vaša oranžna barva */
+  color: white !important;
+}
+
+.login-submit-btn:hover {
+  background-color: #ff7043 !important; /* Temnejša oranžna za hover */
+}
+
+/* --- Navbar User Icon --- */
+.nav-user-icon-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-user-icon-link:hover {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.2); /* Rahel odsev na hover v navbaru */
+  border-radius: 50%;
+}

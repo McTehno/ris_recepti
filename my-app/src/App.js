@@ -6,6 +6,9 @@ import VsiRecepti from './pages/VsiRecepti';
 import MojiRecepti from './pages/MojiRecepti';
 import ReceptPodrobnosti from './pages/ReceptPodrobnosti';
 import ReceptForm from './pages/ReceptForm';
+import Login from './pages/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { IconButton } from '@mui/material';
 
 function App() {
   return (
@@ -16,8 +19,12 @@ function App() {
           <Link to="/">Domov</Link> | 
           <Link to="/vsi-recepti">Vsi recepti</Link> | 
           <Link to="/moji-recepti">Moji recepti</Link> | 
-          <Link to="/nov-recept">Ustvari nov recept</Link>
-          
+          <Link to="/nov-recept">Ustvari nov recept</Link> | 
+          <Link to="/login" className="nav-user-icon-link">
+            <IconButton color="inherit" aria-label="login" size="small">
+              <AccountCircleIcon fontSize="large" />
+            </IconButton>
+          </Link>
         </nav>
       </header>
 
@@ -29,6 +36,7 @@ function App() {
           <Route path="/nov-recept" element={<ReceptForm />} />   {/*kreiranje recept */}
           <Route path="/recept/:id/edit" element={<ReceptForm />} /> {/* editiranje recept */}
           <Route path="/recept/:id" element={<ReceptPodrobnosti />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
 
       </main>
