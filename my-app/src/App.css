@@ -444,7 +444,7 @@ div.search-container button:hover {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: inherit;
+  color: #ffb347;
   margin-left: 0.5rem;
   padding: 0.25rem;
   transition: transform 0.3s ease;
