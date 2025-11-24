@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import api from "../services/api"; 
 
 function ReceptForm() {
-  const { id } = useParams(); //ako ima id togas edit, ako ne ustvari
+  const userId = sessionStorage.getItem('userId');
+  const { id } = useParams(userId); //ako ima id togas edit, ako ne ustvari
   const navigate = useNavigate();
 
   const [recept, setRecept] = useState({
@@ -14,7 +15,13 @@ function ReceptForm() {
     priprava: "",
     sestavine: [{ ime: "" }]
   });
-
+  useEffect(() => {
+  if (!userId) {
+      navigate('/login');
+      return;
+    }
+  }, [userId, navigate]);
+  
   useEffect(() => {
     if (id) {
       // Ako e edit, povikaj postoecki podatoci
@@ -62,14 +69,19 @@ const handleRemoveSestavina = (index) => {
 
   const handleSubmit = (e) => {
   e.preventDefault();
+  const receptZaPosiljanje = {
+      ...recept, 
+      uporabnik: { id: userId } 
+    };
+
   if (id) {
     //pri submit  da se promeni receptot i da ne vrati na moji recepti
-     api.put(`/recepti/${id}`, recept)
+     api.put(`/recepti/${id}`, receptZaPosiljanje)
       .then(() => navigate("/moji-recepti"))
       .catch(err => console.error(err));
   } else {
     // da se ustvari nov recept
-    api.post("/recepti/post", recept)
+    api.post("/recepti/post", receptZaPosiljanje)
       .then(() => navigate("/moji-recepti"))
       .catch(err => console.error(err));
   }
