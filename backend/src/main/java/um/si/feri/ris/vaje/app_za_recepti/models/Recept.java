@@ -32,7 +32,7 @@ public class Recept {
     private String priprava;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uporabnik_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker uporabnik vsebuje objekt tipa recept
