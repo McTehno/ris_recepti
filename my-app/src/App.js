@@ -11,6 +11,7 @@ import ReceptPodrobnosti from './pages/ReceptPodrobnosti';
 import ReceptForm from './pages/ReceptForm';
 import Login from './pages/Login';
 import Register from './pages/Register'; 
+import Profil from './pages/Profil';
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
           <Link to="/vsi-recepti">Vsi recepti</Link> | 
           <Link to="/moji-recepti">Moji recepti</Link> | 
           <Link to="/nov-recept">Ustvari nov recept</Link> | 
-          <Link to="/login" className="nav-user-icon-link">
+          <Link to="/profil" className="nav-user-icon-link">
             <IconButton color="inherit" aria-label="login" size="small">
               <AccountCircleIcon fontSize="large" />
             </IconButton>
@@ -41,6 +42,7 @@ function App() {
           <Route path="/recept/:id" element={<ReceptPodrobnosti />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profil" element={<Profil />} />
         </Routes>
 
       </main>

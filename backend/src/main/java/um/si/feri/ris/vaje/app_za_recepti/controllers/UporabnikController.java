@@ -31,7 +31,7 @@ public class UporabnikController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Uporabnik loginPodatki) {
-        // Poišcemo uporabnika po enaslovu
+        // Poiščemo uporabnika po e-naslovu
         Optional<Uporabnik> uporabnik = uporabnikRepository.findByEnaslov(loginPodatki.getEnaslov());
 
         if (uporabnik.isPresent()) {

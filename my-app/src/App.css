@@ -474,3 +474,144 @@ div.search-container button:hover {
   color: #ff7043;
   text-decoration: underline;
 }
+
+/* ... obstoječa koda v App.css ... */
+
+/* --- Profil Page Styles --- */
+
+/* Naslov profila */
+.profil-title {
+  color: #ff7043;
+  text-align: center;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Alert box margin */
+.profil-alert {
+  margin-bottom: 1rem;
+}
+
+.profil-form-box {
+  max-width: 500px; /* Polja ne bodo širša od 500px */
+  margin: 0 auto;   /* Postavi obrazec na sredino */
+  width: 100%;
+}
+
+.custom-textfield .MuiInputBase-root {
+  height: 50px !important; /* Manjša višina od privzete */
+}
+
+.custom-textfield .MuiInputLabel-root {
+  transform: translate(14px, 14px) scale(1); /* Prilagoditev pozicije labele */
+}
+
+.custom-textfield .MuiInputLabel-root.Mui-focused,
+.custom-textfield .MuiInputLabel-root.MuiFormLabel-filled {
+  transform: translate(14px, -9px) scale(0.75);
+}
+
+.custom-textfield .MuiOutlinedInput-notchedOutline {
+  border-color: #ffd6c0 !important; 
+  border-width: 2px !important; /* Če želiš, da je rob malo debelejši kot prej */
+}
+
+/* 2. Barva roba, ko greš z miško čez (HOVER) */
+.custom-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #ffb347 !important; /* Tvoja glavna oranžna */
+}
+
+/* 3. Barva roba, ko klikneš v polje (FOKUS) */
+.custom-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #ff7043 !important; /* Temnejša oranžna za fokus */
+}
+
+/* 4. Barva teksta labele (npr. "E-naslov"), ko polje ni v fokusu */
+.custom-textfield .MuiInputLabel-root {
+  color: #888 !important; /* Sivo, ali pa daj oranžno, če želiš */
+}
+
+/* 5. Barva labele, ko je polje v fokusu (že imaš, ampak za vsak slučaj) */
+.custom-textfield .MuiInputLabel-root.Mui-focused {
+  color: #ff7043 !important;
+}
+
+/* Wrapper za gumbe */
+.profil-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profil-secondary-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+/* Gumb Shrani (oranžen) */
+.btn-save {
+  background-color: #ffb347 !important;
+  color: white !important;
+  width: 100%;
+}
+
+.btn-save:hover {
+  background-color: #ff7043 !important;
+}
+
+/* Gumb Odjava (RDEČ, kot zahtevano) */
+.btn-logout {
+  background-color: #f44336 !important; /* Rdeča barva */
+  color: white !important;
+  flex: 1;
+}
+
+.btn-logout:hover {
+  background-color: #d32f2f !important; /* Temnejša rdeča */
+}
+
+/* Gumb Izbriši račun (Outlined rdeč ali siv, da se loči od odjave) */
+.btn-delete-account {
+  color: #d32f2f !important;
+  border-color: #d32f2f !important;
+  flex: 1;
+}
+
+.btn-delete-account:hover {
+  background-color: rgba(211, 47, 47, 0.04) !important;
+  border-color: #b71c1c !important;
+  color: #b71c1c !important;
+}
+
+/* Loading text center */
+.loading-text {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.recept-form .custom-textfield input {
+  border: none !important;       
+  padding: 0 !important;         /* Odstrani padding, ki ga povzroča .recept-form */
+  margin-bottom: 0 !important;
+  margin-left: 15px !important;
+  border-radius: 0 !important;
+  height: auto !important;       /* Višino naj določa starš (MUI wrapper) */
+}
+
+/* Zagotovimo, da je besedilo v polju vertikalno poravnano na sredino */
+.custom-textfield .MuiInputBase-input {
+  display: flex;
+  align-items: center;
+  height: 100% !important; 
+  padding: 15px 14px !important; /* Rahlo zamaknemo tekst od levega roba */
+}
+
+/* Responsive adjustments for profile buttons */
+@media (max-width: 480px) {
+  .profil-secondary-actions {
+    flex-direction: column;
+  }
+}
