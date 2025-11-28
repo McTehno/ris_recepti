@@ -61,6 +61,9 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 ## Diagram primerov uporabe
 ![Diagram primerov uporabe](./dokumentacija/DPU_ris.png)
 
+## Razredni diagram
+![Razredni Diagram](./dokumentacija/RIS_Class_Diagram.png)
+
 ## Dokumentacija za razvijalce
 
 
