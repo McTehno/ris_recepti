@@ -63,6 +63,13 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 
 ## Razredni diagram
 ![Razredni Diagram](./dokumentacija/RIS_Class_Diagram.png)
+- Uporabnik: vsebuje podatke o uporabniku. Ima tudi metodo ki vrne podrobnosti določenega uporabnika.
+- UporabnikStorage je razred za delo s Uporabniki. Vsebuje seznam vseh uporabnikov in metode vrni vse uporabnike ter vrni uporabnika.
+- Recept je razred s podatki za recept. Omogoča izračun poprečne ocene recepta, dodajanje in odstranjevanje komentarjev, dodajanje ocene, vrača komentarje in vse podrobnosti recepta. Ima atribut Uporabnik, seznam ocen recepta in seznam komentarjev recepta.
+- Sestavina: shrani podatke o sestavine
+- Komentar: hrani podatke o komentarju
+- Ocena: hrani podatke o oceni
+- ReceptStorage: hrani podatke - vse recepte in ima metode za delo z njimi kot so vrni vse recepte, vrni recepte uporabnika, ustvari recept, izbrisi recept, spremeni recept, iskanje po parametrih, vračanje recepta in metodo za izvoz recepta.
 
 ## Dokumentacija za razvijalce
 
