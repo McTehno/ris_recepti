@@ -9,9 +9,10 @@ function ReceptPodrobnosti() {
   const [sestavine, setSestavine] = useState([]);
   //--- ZA OCENEVANJE ---
   const userId = sessionStorage.getItem('userId'); // dobimo id trenutnega uporabnika
-  const [mojaOcena, setMojaOcena] = useState(0); // izbrana ocena
+  const [mojaOcena, setMojaOcena] = useState(0); // izbrana ocena (0 j brez ocene)
   const [hover, setHover] = useState(0);         // za hover efekt
   const [sporocilo, setSporocilo] = useState("");
+  const [jeAvtor, setJeAvtor] = useState(false); // Ali je trenutni uporabnik avtor?
 
   useEffect(() => {
     fetchRecept();
@@ -21,10 +22,33 @@ function ReceptPodrobnosti() {
       .catch(err => console.error("Greska pri dobivanje na sostojki:", err));
   }, [id]);
 
+  // ko dobimo recept in imamo userId, preverimo dodatne pogoje (avtor ali ocena)
+  useEffect(() => {
+    if (recept && userId) {
+        if (recept.uporabnik && recept.uporabnik.id === parseInt(userId)) {
+            setJeAvtor(true);
+        } else {
+          preveriMojoOceno();
+        }
+    }
+  }, [recept, userId]);
+
   const fetchRecept = () => {
     api.get(`/recepti/${id}`)
       .then(res => setRecept(res.data))
       .catch(err => console.error(err));
+  };
+
+  // preverjanje ce je uporabnik ze ocenil ta recept
+  const preveriMojoOceno = () => {
+      api.get(`/ocene/recept/${id}/uporabnik/${userId}`)
+        .then(res => {
+            if (res.data > 0) {
+                setMojaOcena(res.data); // nastavi zvezdice na obstoječo oceno
+                setSporocilo("Vaša trenutna ocena: " + res.data);
+            }
+        })
+        .catch(err => console.error("Napaka pri preverjanju ocene", err));
   };
 
   const oddajOceno = async () => {
@@ -36,16 +60,20 @@ function ReceptPodrobnosti() {
       setSporocilo("Prosim, izberite število zvezdic.");
       return;
     }
+    if (jeAvtor) {
+        setSporocilo("Svojega recepta ne morete oceniti.");
+        return;
+    }
 
     const zahtevaZaOceno = {
-      vrednost: mojaOcena,       // Ujema se z 'public int vrednost' v Javi
-      uporabnikId: parseInt(userId) // Ujema se z 'public Long uporabnikId' v Javi
+      vrednost: mojaOcena,
+      uporabnikId: parseInt(userId) 
     };
 
     try {
       await api.post(`/ocene/recept/${id}`, zahtevaZaOceno);
       setSporocilo("Hvala za vašo oceno!");
-      fetchRecept(); 
+      fetchRecept(); //refresh povprečne ocene
     } catch (error) {
       console.error("Napaka pri oddaji ocene:", error);
       if (error.response && error.response.data) {
@@ -74,7 +102,7 @@ function ReceptPodrobnosti() {
         </ul>
       ) : (
         <p>Nima sestavine za recept: {recept.ime}.</p>
-      )}
+      )}{!jeAvtor && (
       <div className="ocenjevanje-container" style={{ marginTop: '20px', padding: '10px', border: '1px solid #ddd' }}>
         <h3>Oceni recept:</h3>
         
@@ -112,6 +140,7 @@ function ReceptPodrobnosti() {
         
         {sporocilo && <p style={{ color: sporocilo.includes("Napaka") ? 'red' : 'green' }}>{sporocilo}</p>}
       </div>
+      )}
     </div>
   );
 }
