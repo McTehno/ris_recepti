@@ -65,7 +65,6 @@ public class ReceptController {
             Recept recept = receptOptional.get();
             recept.setIme(noviPodatki.getIme());
             recept.setPriprava(noviPodatki.getPriprava());
-            recept.setOcena(noviPodatki.getOcena());
             recept.setTip(noviPodatki.getTip());
 
             //ako sostojki ne se podadeni da se inicijaliziret
@@ -113,7 +112,7 @@ public class ReceptController {
             return List.of();
         }
     }
-    //Pridobivanje recepti uporabnika po imenu recepta
+    //Pridobivanje receptov uporabnika po imenu recepta
     @GetMapping("/uporabnik/{id}/ime/{ime}")
     public List<Recept> getReceptiUporabnikaPoImenu(@PathVariable Long id, @PathVariable String ime) {
         return uporabnikRepository.findById(id)
