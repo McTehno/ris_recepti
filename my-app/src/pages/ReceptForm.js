@@ -66,9 +66,20 @@ const handleRemoveSestavina = (index) => {
 
   const handleSubmit = (e) => {
   e.preventDefault();
+  const ocisceneSestavine = recept.sestavine.map(sestavina => {
+      return {
+        id: sestavina.id, // Id ohranimo za urejanje
+        ime: sestavina.ime
+        // ne vkljucujemo recept tukaj ker se dogaja se en infinite loop pri parse-anju
+      };
+    });
+
   const receptZaPosiljanje = {
-      ...recept, 
-      uporabnik: { id: userId } 
+      ime: recept.ime,
+      tip: recept.tip,
+      priprava: recept.priprava,
+      sestavine: ocisceneSestavine,
+      uporabnik: { id: userId }
     };
 
   if (id) {
