@@ -72,6 +72,7 @@ function MojiRecepti() {
                 </h5>
                 <p><strong>Datum:</strong> {recept.datumUstvarjanja}</p>
                 <p><strong>Tip:</strong> {recept.tip}</p>
+                <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
                 <div>
                 <Link to={`/recept/${recept.id}/edit`}>
                     <button className="btn-action">Spremeni</button>

@@ -26,7 +26,7 @@ function ReceptPodrobnosti() {
     <div className="recept-podrobnosti">
       <h2>{recept.ime}</h2>
       <p><strong>Tip:</strong> {recept.tip}</p>
-      <p><strong>Ocena:</strong> {recept.ocena}</p>
+      <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
       <p><strong>Priprava:</strong> {recept.priprava}</p>
       <p><strong>Uporabnik:</strong>{recept.uporabnik ? `${recept.uporabnik.ime} ${recept.uporabnik.priimek}` : "Neznan avtor"}</p>
 

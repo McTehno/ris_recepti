@@ -55,7 +55,7 @@ function VsiRecepti() {
           <Link to={`/recept/${recept.id}`}>{recept.ime}</Link> 
         </h5>
         <p><strong>Datum:</strong> {recept.datumUstvarjanja}</p>
-        <p><strong>Ocena:</strong> {recept.ocena}</p>
+        <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
         <p><strong>Tip:</strong> {recept.tip}</p>
         
       </div>

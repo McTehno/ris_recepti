@@ -11,7 +11,6 @@ function ReceptForm() {
   const [recept, setRecept] = useState({
     ime: "",
     tip: "",
-    ocena: 10,  //ko implementiram ocenjevanje bo to tudi spremenjeno v ""
     priprava: "",
     sestavine: [{ ime: "" }]
   });
@@ -39,8 +38,6 @@ function ReceptForm() {
   //promena za input poleto
   const handleChange = (e, index) => {
     const { name, value } = e.target;  //name odd input elementot, value od input elementot //e.target e input elementot
-    //OCENA, ke promenis ko ke dodajs ocenuvanje
-    if (name === "ocena") return;
     if (name === "sestavina") {
       const newSestavine = [...recept.sestavine];
       newSestavine[index].ime = value;
@@ -94,8 +91,6 @@ const handleRemoveSestavina = (index) => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="ime" placeholder="Ime" value={recept.ime} onChange={handleChange} required />
         <input type="text" name="tip" placeholder="Tip" value={recept.tip} onChange={handleChange} required />
-         {/* Skrita ocena vedno 10 */}
-        <input type="hidden" name="ocena" value={recept.ocena} />
         <textarea name="priprava" placeholder="Priprava" value={recept.priprava} onChange={handleChange} />
 
         <h3>Sestavine</h3>
