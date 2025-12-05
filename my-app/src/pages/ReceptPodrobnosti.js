@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import api from "../services/api"; // ако компонентата е во src/components
+import api from "../services/api"; 
+import IzvozButton from "./IzvozButton"; 
+
 
 function ReceptPodrobnosti() {
   const { id } = useParams();
@@ -40,6 +42,8 @@ function ReceptPodrobnosti() {
       ) : (
         <p>Nima sestavine za recept: {recept.ime}.</p>
       )}
+
+      <IzvozButton recept={recept} sestavine={sestavine} />
     </div>
   );
 }
