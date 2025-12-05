@@ -9,9 +9,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-// nekaj ne gre pa sem dodal da se lahko nahaja v sqlu samo ena ocena za en recept za vsakega uporabnika 
+// nekaj ne gre pa sem dodal da se lahko nahaja v sqlu samo ena ocena za en recept za vsakega uporabnika
 @Table(name = "ocena", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"recept_id", "uporabnik_id"})
 })
@@ -37,6 +39,7 @@ public class Ocena {
     // Povezava do uporabnika, ki je podal oceno
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uporabnik_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties("recepti")
     private Uporabnik uporabnik;
 }

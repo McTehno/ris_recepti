@@ -2,6 +2,7 @@ package um.si.feri.ris.vaje.app_za_recepti.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
@@ -36,46 +37,39 @@ public class OcenaController {
     @GetMapping("/recept/{idRecepta}/uporabnik/{idUporabnika}")
     public ResponseEntity<Integer> vrniMojoOceno(@PathVariable Long idRecepta, @PathVariable Long idUporabnika) {
         Optional<Ocena> ocena = ocenaRepository.findByReceptIdAndUporabnikId(idRecepta, idUporabnika);
-        if (ocena.isPresent()) {
+        Optional<Recept> receptOpt = receptRepository.findById(idRecepta);
+
+        if (ocena.isPresent() && receptOpt.isPresent()) {
+            Recept recept = receptOpt.get();
+            recept.izracunajPovprecje();
             return ResponseEntity.ok(ocena.get().getVrednost());
+
         }
         return ResponseEntity.ok(0); // 0 pomeni, da se ni ocenjeno
     }
 
     @PostMapping("/recept/{idRecepta}")
+    @Transactional // POMEMBNOOOOOO, zagotovi, da se vse zgodi v eni transakciji
     public ResponseEntity<Ocena> dodajOcenoReceptu(@PathVariable Long idRecepta, @RequestBody OcenaRequest request) {
 
-        // 1. Poiščemo recept
         Optional<Recept> receptOpt = receptRepository.findById(idRecepta);
-        // 2. Poiščemo uporabnika
         Optional<Uporabnik> uporabnikOpt = uporabnikRepository.findById(request.uporabnikId);
 
         if (receptOpt.isPresent() && uporabnikOpt.isPresent()) {
             Recept recept = receptOpt.get();
             Uporabnik uporabnik = uporabnikOpt.get();
 
-            // 3. Preverjamo obstoj ocene
-            Optional<Ocena> obstoecaOcena = ocenaRepository.findByReceptIdAndUporabnikId(idRecepta, request.uporabnikId);
+            // Ustvarimo objekt ocena
+            Ocena novaOcena = new Ocena();
+            novaOcena.setUporabnik(uporabnik);
+            novaOcena.setVrednost(request.vrednost);
 
-            // 4. Pripravljamo oceno za shranjevanje
-            Ocena ocenaZaShranit;
-            if (obstoecaOcena.isPresent()) {
-                ocenaZaShranit = obstoecaOcena.get();
-                ocenaZaShranit.setVrednost(request.vrednost);
-            } else {
-                // USTVARJANJE NOVE (INSERT)
-                ocenaZaShranit = new Ocena();
-                ocenaZaShranit.setRecept(recept);
-                ocenaZaShranit.setUporabnik(uporabnik);
-                ocenaZaShranit.setVrednost(request.vrednost);
-            }
+            recept.dodajNovoOceno(novaOcena);
+            ocenaRepository.save(novaOcena);
+            receptRepository.save(recept);
 
-            // 5. Shranjevanje/Posodabljanje ocene
-            ocenaRepository.save(ocenaZaShranit);
-
-            return ResponseEntity.ok(ocenaZaShranit);
+            return ResponseEntity.ok(novaOcena);
         }
-
-        return null;
+        return ResponseEntity.notFound().build();
     }
 }
