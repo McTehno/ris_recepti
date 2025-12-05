@@ -616,7 +616,6 @@ div.search-container button:hover {
   }
 }
 
-<<<<<<< HEAD
 .izvoz-button {
   background-color: #45a049;
   color: white;
@@ -631,7 +630,6 @@ div.search-container button:hover {
 .izvoz-button:hover {
   background-color: #3d8a3d; /* потемна нијанса за hover */
 }
-=======
 /* --- Ocenevanje --- */
 
 
@@ -720,4 +718,3 @@ div.search-container button:hover {
     pointer-events: none;
   }
 }
->>>>>>> 689984d241e43cf129037089e9b64163e70f725d
