@@ -47,35 +47,35 @@ public class Recept {
     @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker sestavina vsebuje objekt tipa recept
     private List<Sestavina> sestavine;
 
-    @OneToMany(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recept", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("recept") // Prepreci zanko nazaj na recept
     private List<Ocena> ocene;
 
     // --- POSLOVNA LOGIKA ---
     public void izracunajPovprecje() {
-        if (ocene == null || ocene.isEmpty()) {
+        if (this.ocene == null || this.ocene.isEmpty()) {
             this.povprecnaOcena = 0.0;
             return;
         }
         double vsota = 0;
-        for (Ocena o : ocene) {
+        for (Ocena o : this.ocene) {
             vsota += o.getVrednost();
         }
-
-        this.povprecnaOcena = vsota / ocene.size();
+        this.povprecnaOcena = vsota / this.ocene.size();
     }
 
-    public void dodajOceno(int vrednost, Uporabnik ocenjevalec) {
+    public void dodajNovoOceno(Ocena novaOcena) {
         if (this.ocene == null) {
             this.ocene = new ArrayList<>();
         }
-        // ustvari nov objekt Ocena
-        Ocena novaOcena = new Ocena();
-        novaOcena.setVrednost(vrednost);
-        novaOcena.setUporabnik(ocenjevalec);
-        novaOcena.setRecept(this); // dvosmerna povezava
 
+        // 1. dodamo oceno v seznam na receptu (v ramu)
         this.ocene.add(novaOcena);
+
+        // 2. povezemo oceno z receptom (pomembno za bazo)
+        novaOcena.setRecept(this);
+
+        // 3. takoj preracuna novo povprecje
         izracunajPovprecje();
     }
 }
