@@ -196,7 +196,7 @@ git push origin ime-vase-funkcionalnosti
  
 Na strani za prikaz podrobnosti recepta je dodan namenski gumb, ki je implementiran kot ločena komponenta IzvozButton. Ob kliku na ta gumb se samodejno generira pdf z imenom recepta z vsemi podatki. 
 
-**Preizkus funkcionalnosti?**
+**Preizkus funkcionalnosti**
 
 Uporabnik lahko funkcionalnost preizkusi tako, da v aplikaciji izbere recept in s tem se premakne na stran s podrobnosti izbranega recepta. Na te strani je prikazan gumb Izvozi Recept. Ko uporabnik klikne na ta gumb, se podrobnosti recepta takoj izvozijo v trajno obliko (pdf) in shrani na napravi.
 
