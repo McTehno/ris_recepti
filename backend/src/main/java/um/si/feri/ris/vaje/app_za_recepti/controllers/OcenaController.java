@@ -54,21 +54,30 @@ public class OcenaController {
 
         Optional<Recept> receptOpt = receptRepository.findById(idRecepta);
         Optional<Uporabnik> uporabnikOpt = uporabnikRepository.findById(request.uporabnikId);
+        Optional<Ocena> obstojecaOcenaOpt = ocenaRepository.findByReceptIdAndUporabnikId(idRecepta, request.uporabnikId);
+
+        Ocena ocena;
 
         if (receptOpt.isPresent() && uporabnikOpt.isPresent()) {
+
             Recept recept = receptOpt.get();
             Uporabnik uporabnik = uporabnikOpt.get();
 
-            // Ustvarimo objekt ocena
-            Ocena novaOcena = new Ocena();
-            novaOcena.setUporabnik(uporabnik);
-            novaOcena.setVrednost(request.vrednost);
+            if(obstojecaOcenaOpt.isPresent()) {
+                ocena = obstojecaOcenaOpt.get();
+                ocena.setVrednost(request.vrednost);
+            } else {
+                // Ustvarimo objekt ocena
+                ocena = new Ocena();
+                ocena.setUporabnik(uporabnik);
+                ocena.setVrednost(request.vrednost);
 
-            recept.dodajNovoOceno(novaOcena);
-            ocenaRepository.save(novaOcena);
+                recept.dodajNovoOceno(ocena);
+            }
+            ocenaRepository.save(ocena);
+            recept.izracunajPovprecje();
             receptRepository.save(recept);
-
-            return ResponseEntity.ok(novaOcena);
+            return ResponseEntity.ok(ocena);
         }
         return ResponseEntity.notFound().build();
     }

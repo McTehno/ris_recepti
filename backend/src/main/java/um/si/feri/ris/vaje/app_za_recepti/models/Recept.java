@@ -43,7 +43,7 @@ public class Recept {
         this.datumUstvarjanja = LocalDate.now();
     }
 
-    @OneToMany(mappedBy = "recept", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker sestavina vsebuje objekt tipa recept
     private List<Sestavina> sestavine;
 
