@@ -1,9 +1,12 @@
 package um.si.feri.ris.vaje.app_za_recepti.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.dao.OcenaRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.Ocena;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
 
@@ -20,6 +23,9 @@ public class OcenaController {
     @Autowired
     private UporabnikRepository uporabnikRepository;
 
+    @Autowired
+    private OcenaRepository ocenaRepository;
+
     // DTO (Data Transfer Object) za prejem podatkov iz frontenda
     // To je notranji razred samo za prenos podatkov
     public static class OcenaRequest {
@@ -27,13 +33,17 @@ public class OcenaController {
         public Long uporabnikId; // ID uporabnika, ki ocenjuje
     }
 
-    /**
-     * POST metoda za dodajanje ocene receptu.
-     * URL: /api/ocene/recept/{idRecepta}
-     * Body: { "vrednost": 5, "uporabnikId": 1 }
-     */
+    @GetMapping("/recept/{idRecepta}/uporabnik/{idUporabnika}")
+    public ResponseEntity<Integer> vrniMojoOceno(@PathVariable Long idRecepta, @PathVariable Long idUporabnika) {
+        Optional<Ocena> ocena = ocenaRepository.findByReceptIdAndUporabnikId(idRecepta, idUporabnika);
+        if (ocena.isPresent()) {
+            return ResponseEntity.ok(ocena.get().getVrednost());
+        }
+        return ResponseEntity.ok(0); // 0 pomeni, da se ni ocenjeno
+    }
+
     @PostMapping("/recept/{idRecepta}")
-    public Recept dodajOcenoReceptu(@PathVariable Long idRecepta, @RequestBody OcenaRequest request) {
+    public ResponseEntity<Ocena> dodajOcenoReceptu(@PathVariable Long idRecepta, @RequestBody OcenaRequest request) {
 
         // 1. Poiščemo recept
         Optional<Recept> receptOpt = receptRepository.findById(idRecepta);
@@ -44,20 +54,28 @@ public class OcenaController {
             Recept recept = receptOpt.get();
             Uporabnik uporabnik = uporabnikOpt.get();
 
-            // Validacija ocene (da je med 1 in 5)
-            if (request.vrednost < 1 || request.vrednost > 5) {
-                throw new IllegalArgumentException("Ocena mora biti med 1 in 5");
+            // 3. Preverjamo obstoj ocene
+            Optional<Ocena> obstoecaOcena = ocenaRepository.findByReceptIdAndUporabnikId(idRecepta, request.uporabnikId);
+
+            // 4. Pripravljamo oceno za shranjevanje
+            Ocena ocenaZaShranit;
+            if (obstoecaOcena.isPresent()) {
+                ocenaZaShranit = obstoecaOcena.get();
+                ocenaZaShranit.setVrednost(request.vrednost);
+            } else {
+                // USTVARJANJE NOVE (INSERT)
+                ocenaZaShranit = new Ocena();
+                ocenaZaShranit.setRecept(recept);
+                ocenaZaShranit.setUporabnik(uporabnik);
+                ocenaZaShranit.setVrednost(request.vrednost);
             }
 
-            // 3. Uporabimo metodo znotraj modela Recept (kot zahtevano)
-            // Ta metoda ustvari objekt Ocena, ga doda v seznam in preračuna povprečje
-            recept.dodajOceno(request.vrednost, uporabnik);
+            // 5. Shranjevanje/Posodabljanje ocene
+            ocenaRepository.save(ocenaZaShranit);
 
-            // 4. Shranimo recept.
-            // Zaradi CascadeType.ALL na seznamu 'ocene' se bo v bazo shranila tudi nova Ocena!
-            return receptRepository.save(recept);
+            return ResponseEntity.ok(ocenaZaShranit);
         }
 
-        return null; // Ali vrneš ustrezen HTTP error status
+        return null;
     }
 }

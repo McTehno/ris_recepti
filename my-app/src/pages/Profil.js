@@ -58,11 +58,22 @@ function Profil() {
     e.preventDefault();
     setMessage({ type: '', text: '' });
     
+    // enako kot pri ReceptForm.js, izognemo se infinite loop-u 
+    const uporabnikZaPosiljanje = {
+      ime: podatki.ime,
+      priimek: podatki.priimek,
+      enaslov: podatki.enaslov,
+      geslo: podatki.geslo
+    };
+
     try {
-      await api.put(`/uporabniki/${userId}`, podatki);
+      await api.put(`/uporabniki/${userId}`, uporabnikZaPosiljanje);
       setMessage({ type: 'success', text: 'Podatki uspešno posodobljeni!' });
     } catch (err) {
       console.error("Napaka pri posodabljanju:", err);
+      if (err.response && err.response.data) {
+         console.log("Server error data:", err.response.data);
+      }
       setMessage({ type: 'error', text: 'Napaka pri posodabljanju podatkov.' });
     }
   };
