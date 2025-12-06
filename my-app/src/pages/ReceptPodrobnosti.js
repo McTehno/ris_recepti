@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import api from "../services/api"; // ако компонентата е во src/components
+import api from "../services/api";
+import Komentarji from "./Komentarji"; // 1. Uvoz komponente za komentarje
 
 function ReceptPodrobnosti() {
   const { id } = useParams();// id recepta
@@ -141,6 +142,10 @@ function ReceptPodrobnosti() {
         {sporocilo && <p style={{ color: sporocilo.includes("Napaka") ? 'red' : 'green' }}>{sporocilo}</p>}
       </div>
       )}
+
+      <hr style={{ margin: '30px 0' }} />
+      <Komentarji receptId={id} />
+
     </div>
   );
 }
