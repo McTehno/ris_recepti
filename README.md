@@ -214,4 +214,16 @@ Na strani za prikaz podrobnosti recepta je dodan obrazec za vnos komentarja in d
 Uporabnik lahko komentiranje preizkusi tako, da v aplikaciji izbere določen recept oziroma sproži akcijo prikaza podrobnosti recepta, kjer je na dnu strani prikazana forma in že obstoječi komentarji. Če bo poskušal komentirati brez predhodne prijave bo dobil obvestilo o obvezni predhodni prijavi. Ko prijavljen uporabnik nato izpolni obrazec in klikne na objavo se bo njegov komentar takoj prikazal v seznamu obstoječih komentarjev.
 
 
+**3) Ocenjevanje**  
+
+Prijavljenim uporabnikom je omogočeno ocenjevanje receptov drugih avtorjev z uporabo lestvice zvezdic (od 1 do 5). Ta funkcionalnost omogoča vrednotenje kulinaričnih vsebin in samodejni izračun povprečne ocene, kar služi kot kazalnik priljubljenosti in kakovosti recepta.
+
+**Kako deluje?**  
+
+Na strani za prikaz podrobnosti recepta je dodan interaktivni sklop z zvezdicami in gumbom za oddajo ocene. Ob nalaganju strani sistem preveri status uporabnika in morebitno že obstoječo oceno. Ob kliku na gumb "Oddaj oceno" se podatki pošljejo na strežnik, kjer se ocena shrani, sistem pa samodejno preračuna novo povprečje recepta. Vmesnik preprečuje, da bi avtor ocenjeval lastne recepte.
+
+**Preizkus funkcionalnosti?**  
+ 
+Uporabnik lahko ocenjevanje preizkusi tako, da odpre stran s podrobnostmi kateregakoli recepta, ki ga ni ustvaril sam. V sekciji za ocenjevanje izbere želeno število zvezdic in klikne gumb za oddajo. Če uporabnik ni prijavljen, ga sistem opozori na obvezno prijavo. Po uspešni oddaji se prikaže potrditveno sporočilo ("Hvala za vašo oceno!"), povprečna ocena recepta na vrhu strani pa se takoj posodobi na novo vrednost.
+
 
