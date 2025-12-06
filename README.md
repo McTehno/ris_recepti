@@ -188,9 +188,9 @@ git push origin ime-vase-funkcionalnosti
 
 ## Implementacija funkcionalnosti
 
-**1)Izvoz pdf**
+**1) Izvoz pdf**
 
- Iz trenutnega pregleda recepta,je omogočen izvoz vse pomembne informacije, kot so ime recepta,tip, opis priprave, seznam sestavin in ocena. Funkcionalnost je zasnovana tako, da uporabniku omogoča trajno shranjevanje recepta zunaj aplikacije.
+ Iz trenutnega pregleda recepta, je omogočen izvoz vse pomembne informacije, kot so ime recepta, tip, opis priprave, seznam sestavin in ocena. Funkcionalnost je zasnovana tako, da uporabniku omogoča trajno shranjevanje recepta zunaj aplikacije.
  
  **Kako deluje?**
  
@@ -201,7 +201,7 @@ Na strani za prikaz podrobnosti recepta je dodan namenski gumb, ki je implementi
 Uporabnik lahko funkcionalnost preizkusi tako, da v aplikaciji izbere recept in s tem se premakne na stran s podrobnosti izbranega recepta. Na te strani je prikazan gumb Izvozi Recept. Ko uporabnik klikne na ta gumb, se podrobnosti recepta takoj izvozijo v trajno obliko (pdf) in shrani na napravi.
 
 
-**2)Komentiranje**
+**2) Komentiranje**
 
  Prijavljen uporabnik je sposoben komentirati na posamezni strani prikazanega recepta in tako izraziti svoje mnenje, postaviti vprašanje in podobno. 
  
