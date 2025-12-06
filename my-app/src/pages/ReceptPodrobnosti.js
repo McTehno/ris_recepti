@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import api from "../services/api";
-import Komentarji from "./Komentarji"; // 1. Uvoz komponente za komentarje
+import Komentarji from "./Komentarji";
+import IzvozButton from "./IzvozButton"; 
 
 function ReceptPodrobnosti() {
   const { id } = useParams();// id recepta
@@ -13,6 +14,7 @@ function ReceptPodrobnosti() {
   const [mojaOcena, setMojaOcena] = useState(0); // izbrana ocena (0 j brez ocene)
   const [hover, setHover] = useState(0);         // za hover efekt
   const [sporocilo, setSporocilo] = useState("");
+  const [tipObvestila, setTipObvestila] = useState("success"); // 'success' ali 'error'
   const [jeAvtor, setJeAvtor] = useState(false); // Ali je trenutni uporabnik avtor?
 
   useEffect(() => {
@@ -46,10 +48,19 @@ function ReceptPodrobnosti() {
         .then(res => {
             if (res.data > 0) {
                 setMojaOcena(res.data); // nastavi zvezdice na obstoječo oceno
-                setSporocilo("Vaša trenutna ocena: " + res.data);
             }
         })
         .catch(err => console.error("Napaka pri preverjanju ocene", err));
+  };
+
+  // funkcija za prikaz toasta
+  const prikaziObvestilo = (tekst, tip = "success") => {
+    setSporocilo(tekst);
+    setTipObvestila(tip);
+    // samodejno skrij po 3 sekundah
+    setTimeout(() => {
+      setSporocilo("");
+    }, 3000);
   };
 
   const oddajOceno = async () => {
@@ -73,21 +84,30 @@ function ReceptPodrobnosti() {
 
     try {
       await api.post(`/ocene/recept/${id}`, zahtevaZaOceno);
-      setSporocilo("Hvala za vašo oceno!");
+      prikaziObvestilo("Hvala za vašo oceno!"); // Uspeh
       fetchRecept(); //refresh povprečne ocene
     } catch (error) {
       console.error("Napaka pri oddaji ocene:", error);
       if (error.response && error.response.data) {
           console.log("Backend error:", error.response.data);// Prikaz specifične napake iz backend-a i love
       }
-      setSporocilo("Napaka pri oddaji ocene.");
+      prikaziObvestilo("Napaka pri oddaji ocene.", "error");
     }
   };
 
-  if (!recept) return <p>Loading...</p>;
+  if (!recept) return <p className="loading-text">Nalaganje recepta...</p>;
 
   return (
     <div className="recept-podrobnosti">
+
+      {/* TOAST OBVESTILO, se prikaze samo ce obstaja 'sporocilo' */}
+      {sporocilo && (
+        <div className={`toast-notification ${tipObvestila === "error" ? "error" : ""}`}>
+          {sporocilo}
+        </div>
+      )}
+
+
       <h2>{recept.ime}</h2>
       <p><strong>Tip:</strong> {recept.tip}</p>
       <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
@@ -104,48 +124,45 @@ function ReceptPodrobnosti() {
       ) : (
         <p>Nima sestavine za recept: {recept.ime}.</p>
       )}{!jeAvtor && (
-      <div className="ocenjevanje-container" style={{ marginTop: '20px', padding: '10px', border: '1px solid #ddd' }}>
-        <h3>Oceni recept:</h3>
-        
-        <div className="zvezdice">
-          {[...Array(5)].map((star, index) => {
-            const ratingValue = index + 1;
-            return (
-              <label key={index}>
-                <input 
-                  type="radio" 
-                  name="rating" 
-                  value={ratingValue} 
-                  onClick={() => setMojaOcena(ratingValue)}
-                  style={{ display: 'none' }}
-                />
-                <span 
-                  className="star" 
-                  style={{ 
-                    cursor: 'pointer', 
-                    color: ratingValue <= (hover || mojaOcena) ? "#ffc107" : "#e4e5e9", 
-                    fontSize: "30px",
-                    transition: "color 200ms"
-                  }}
-                  onMouseEnter={() => setHover(ratingValue)}
-                  onMouseLeave={() => setHover(0)}
-                >
-                  &#9733;
-                </span>
-              </label>
-            );
-          })}
+      <div className="rating-wrapper">
+          <div className="rating-stars">
+            {[...Array(5)].map((star, index) => {
+              const ratingValue = index + 1;
+              return (
+                <label key={index}>
+                  <input 
+                    type="radio" 
+                    name="rating" 
+                    value={ratingValue} 
+                    onClick={() => setMojaOcena(ratingValue)}
+                    style={{ display: 'none' }}
+                  />
+                  <span 
+                    className="star" 
+                    style={{ 
+                      color: ratingValue <= (hover || mojaOcena) ? "#ffc107" : "#e4e5e9"
+                    }}
+                    onMouseEnter={() => setHover(ratingValue)}
+                    onMouseLeave={() => setHover(0)}
+                  >
+                    &#9733;
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          
+          <button className="btn-rate-submit" onClick={oddajOceno}>
+            Oddaj oceno
+          </button>
         </div>
-        
-        <button onClick={oddajOceno} style={{ marginTop: '10px' }}>Oddaj oceno</button>
-        
-        {sporocilo && <p style={{ color: sporocilo.includes("Napaka") ? 'red' : 'green' }}>{sporocilo}</p>}
-      </div>
       )}
 
       <hr style={{ margin: '30px 0' }} />
       <Komentarji receptId={id} />
 
+
+      <IzvozButton recept={recept} sestavine={sestavine} />
     </div>
   );
 }

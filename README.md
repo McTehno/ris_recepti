@@ -185,3 +185,33 @@ git push origin ime-vase-funkcionalnosti
 ```
 
 **4)Naredite Pull Request na GitHub-u z opisom in razlago sprememb vaše veje (`ime-vase-nove-funkcionalnosti`) v glavno vejo originalnega projekta (main), potem pa čakajte na odgovor.**
+
+## Implementacija funkcionalnosti
+
+**1)Izvoz pdf**
+
+ Iz trenutnega pregleda recepta,je omogočen izvoz vse pomembne informacije, kot so ime recepta,tip, opis priprave, seznam sestavin in ocena. Funkcionalnost je zasnovana tako, da uporabniku omogoča trajno shranjevanje recepta zunaj aplikacije.
+ 
+ **Kako deluje?**
+ 
+Na strani za prikaz podrobnosti recepta je dodan namenski gumb, ki je implementiran kot ločena komponenta IzvozButton. Ob kliku na ta gumb se samodejno generira pdf z imenom recepta z vsemi podatki. 
+
+**Preizkus funkcionalnosti**
+
+Uporabnik lahko funkcionalnost preizkusi tako, da v aplikaciji izbere recept in s tem se premakne na stran s podrobnosti izbranega recepta. Na te strani je prikazan gumb Izvozi Recept. Ko uporabnik klikne na ta gumb, se podrobnosti recepta takoj izvozijo v trajno obliko (pdf) in shrani na napravi.
+
+
+**2)Komentiranje**
+
+ Prijavljen uporabnik je sposoben komentirati na posamezni strani prikazanega recepta in tako izraziti svoje mnenje, postaviti vprašanje in podobno. 
+ 
+**Kako deluje?**
+
+Na strani za prikaz podrobnosti recepta je dodan obrazec za vnos komentarja in div za prikaz obstoječih komentarjev. Implementiran je kot ločena komponenta Komentarji. Ob kliku na gumb Objavi ki se nahaja pod obrazcem se uporabnikov komentar shrani v seznam komentarjev določenega recepta in se prikaže v območju za prikaz komentarjev. Komentar prikazuje ime uporabnika in njegov komentar.
+
+**Preizkus funkcionalnosti?**
+
+Uporabnik lahko komentiranje preizkusi tako, da v aplikaciji izbere določen recept oziroma sproži akcijo prikaza podrobnosti recepta, kjer je na dnu strani prikazana forma in že obstoječi komentarji. Če bo poskušal komentirati brez predhodne prijave bo dobil obvestilo o obvezni predhodni prijavi. Ko prijavljen uporabnik nato izpolni obrazec in klikne na objavo se bo njegov komentar takoj prikazal v seznamu obstoječih komentarjev.
+
+
+

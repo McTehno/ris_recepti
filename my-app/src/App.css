@@ -672,3 +672,107 @@ div.search-container button:hover {
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.1);
 }
+
+
+.izvoz-button {
+  background-color: #45a049;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.izvoz-button:hover {
+  background-color: #3d8a3d; /* потемна нијанса за hover */
+}
+/* --- Ocenevanje --- */
+
+
+.rating-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #ffd6c0;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  font-size: 28px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.star:hover {
+  transform: scale(1.2);
+}
+
+.btn-rate-submit {
+  background-color: #ffb347;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px; 
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height: fit-content;
+}
+
+.btn-rate-submit:hover {
+  background-color: #ff7043;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- Toast Notification --- */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  animation: slideIn 0.5s ease, fadeOut 0.5s ease 2.5s forwards; /* Animacija */
+}
+
+.toast-notification.error {
+  background-color: #f44336; 
+}
+
+/* Animacija za prihod toasta */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Animacija za izginutje */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
