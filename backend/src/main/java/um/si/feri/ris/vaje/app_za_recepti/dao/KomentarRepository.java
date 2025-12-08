@@ -8,7 +8,7 @@ import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import java.util.List;
 import java.util.Optional;
 
-public interface KomentarRepository extends CrudRepository<Komentar, String> {
+public interface KomentarRepository extends CrudRepository<Komentar, Long> {
     List<Komentar> findByRecept(Recept recept);
 }
 

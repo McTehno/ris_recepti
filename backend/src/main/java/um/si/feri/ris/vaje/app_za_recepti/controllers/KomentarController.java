@@ -61,8 +61,7 @@ public class KomentarController {
        boolean obstajaRecept = receptRepository.existsById(receptId);
        boolean obstajaKom = receptRepository.existsById(idKom);
        if (obstajaRecept && obstajaKom) {
-           String sId = String.valueOf(idKom);
-           komentarRepository.deleteById(sId);
+           komentarRepository.deleteById(idKom);
        }
 
     }

@@ -654,6 +654,19 @@ div.search-container button:hover {
   font-size: 0.85rem;
 }
 
+.komentar-button {
+  background-color: #ffb347;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px; 
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height: fit-content;
+}
+
+
 .komentar-form textarea {
   width: 100%;
   padding: 12px;

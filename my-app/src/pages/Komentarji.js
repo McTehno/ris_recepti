@@ -49,7 +49,7 @@ function Komentarji({ receptId }) {
       <h4>Komentarji</h4>
       <form onSubmit={handleSubmit} className="komentar-form">
         <textarea value={novKomentar} onChange={(e) => setNovKomentar(e.target.value)} placeholder="Napiši komentar..." rows="3" required />
-        <button type="submit">Objavi</button>
+        <button className='komentar-button' type="submit">Objavi</button>
         {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
       </form>
       <br/>
