@@ -73,6 +73,10 @@ const handleRemoveSestavina = (index) => {
         // ne vkljucujemo recept tukaj ker se dogaja se en infinite loop pri parse-anju
       };
     });
+    if (ocisceneSestavine.length === 0) {
+    alert("Sestavine so obvezni!");
+    return; 
+  }
 
   const receptZaPosiljanje = {
       ime: recept.ime,

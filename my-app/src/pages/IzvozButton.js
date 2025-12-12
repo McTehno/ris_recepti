@@ -1,4 +1,3 @@
-// IzvozButton.jsx
 import React from "react";
 import { jsPDF } from "jspdf";
 
