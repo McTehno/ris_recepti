@@ -32,6 +32,7 @@ public class UstvariReceptTest {
     private Uporabnik testUporabnik;
     private Recept testRecept;
 
+    // Ustvarjanje testnega uporabnika pred vsemi testi
     @BeforeAll
     void createUser() {
 
@@ -42,6 +43,7 @@ public class UstvariReceptTest {
         testUporabnik = uporabnikRepository.save(testUporabnik);
     }
 
+    // Ustvarjanje testnega recepta pred vsakim testom
     @BeforeEach
     void createTestRecept() {
         testRecept = new Recept();
@@ -49,7 +51,7 @@ public class UstvariReceptTest {
         testRecept.setTip("Sladok");
         testRecept.setPriprava("Priprava testnega recepta");
         testRecept.setUporabnik(testUporabnik);
-
+        // Dodajanje dveh sestavin
         Sestavina s1 = new Sestavina();
         s1.setIme("Moka");
         s1.setRecept(testRecept);
@@ -63,38 +65,39 @@ public class UstvariReceptTest {
         sestavine.add(s2);
         testRecept.setSestavine(sestavine);
     }
-
+    // Po vsakem testu izbrišemo testni recept, da baza ostane čista
     @AfterEach
     void deleteTestRecept() {
         if (testRecept != null && testRecept.getId() != null) {
             receptRepository.deleteById(testRecept.getId());
         }
     }
+    // Po vseh testih izbrišemo testnega uporabnika
     @AfterAll
     void deleteTestUser() {
         if (testUporabnik != null && testUporabnik.getId() != null) {
             uporabnikRepository.deleteById(testUporabnik.getId());
         }
     }
-
+    // Preverja, ali se ID dodeli ob ustvarjanju recepta
     @Test
     void testCreateRecept_IdAssigned() {
         Recept saved = receptController.createRecept(testRecept);
         assertNotNull(saved.getId());
     }
-
+    // Preverja, ali se ime recepta pravilno shrani
     @Test
     void testCreateRecept_ImeCorrect() {
         Recept saved = receptController.createRecept(testRecept);
         assertEquals("Test Recept", saved.getIme());
     }
-
+    // Preverja, ali je število sestavin pravilno shranjeno
     @Test
     void testCreateRecept_SestavineCount() {
         Recept saved = receptController.createRecept(testRecept);
         assertEquals(2, saved.getSestavine().size());
     }
-
+    // Preverja, ali so sestavine pravilno povezane z receptom
     @Test
     void testCreateRecept_SestavineLinked() {
         Recept saved = receptController.createRecept(testRecept);
@@ -102,7 +105,7 @@ public class UstvariReceptTest {
         assertEquals(saved, saved.getSestavine().get(1).getRecept());
     }
 
-    //Negativni scenarij
+    // Negativni scenarij: preverja, ali metoda ne dovoli ustvariti recepta brez sestavin
     @Test
     void testCreateRecept_BrezSestavin() {
         Recept r = new Recept();

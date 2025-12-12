@@ -41,13 +41,17 @@ public class ReceptController {
     // ustvarjanje novega recepta
     @PostMapping("/post")
     public Recept createRecept(@RequestBody Recept recept) {
-        if (recept.getSestavine() != null) {
-            for (Sestavina s : recept.getSestavine()) {
-                s.setRecept(recept);
-            }
+        // dodano da se recept ne more ustvariti brez sestavine
+        if (recept.getSestavine() == null || recept.getSestavine().isEmpty()) {
+            return null;
+        }
+
+        for (Sestavina s : recept.getSestavine()) {
+            s.setRecept(recept);
         }
         return receptRepository.save(recept);
     }
+
 
     // Podrobnosti enega recepta
     @GetMapping("/{id}")
