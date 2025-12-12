@@ -71,6 +71,13 @@ Vzpostavili smo osebni sistem za upravljanje kulinaričnih receptov, ki uporabni
 - Ocena: hrani podatke o oceni
 - ReceptStorage: hrani podatke - vse recepte in ima metode za delo z njimi kot so vrni vse recepte, vrni recepte uporabnika, ustvari recept, izbrisi recept, spremeni recept, iskanje po parametrih, vračanje recepta in metodo za izvoz recepta.
 
+## Unit testi in poročilo o testiranju
+
+V repozitoriju je bila dodana nova mapa `testiranje`, ki vsebuje unit teste za aplikacijo in poročilo o testiranju (`porocilo_testiranja.md`). 
+
+- Testi zajemajo funkcionalnosti ustvarjanja in brisanja receptov.
+- V poročilu so opisani testi, kaj preverjajo, kdo je odgovoren za katere teste in analiza uspešnosti testov.
+
 ## Dokumentacija za razvijalce
 
 
