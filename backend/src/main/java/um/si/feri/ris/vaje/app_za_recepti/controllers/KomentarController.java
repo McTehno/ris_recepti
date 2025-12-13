@@ -29,6 +29,13 @@ public class KomentarController {
     public static class KomentarRequest {
         public Long uporabnikId;
         public String vsebina;
+
+        public KomentarRequest() {}
+
+        public KomentarRequest(String vsebina, Long id) {
+            this.vsebina = vsebina;
+            this.uporabnikId = id;
+        }
     }
     public record KomentarResponse(
              Long id,

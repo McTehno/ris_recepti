@@ -17,7 +17,9 @@ public class Komentar {
     String vsebina;
 
     @ManyToOne
+    @JoinColumn(name = "uporabnik_id", nullable = false)
     Uporabnik uporabnik;
     @ManyToOne
+    @JoinColumn(name = "recept_id", nullable = false)
     Recept recept;
 }
