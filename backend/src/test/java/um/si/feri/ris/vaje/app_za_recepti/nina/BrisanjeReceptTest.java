@@ -37,7 +37,7 @@ public class BrisanjeReceptTest {
     private Recept newRecept;
     private Uporabnik u;
 
-    // Testni uporabnik za ustvarjanje recepta
+    // Ustvarjanje testnega uporabnika pred vsemi testi
     @BeforeAll
     void createUser() {
         u = new Uporabnik();
@@ -46,10 +46,9 @@ public class BrisanjeReceptTest {
         u.setGeslo("geslo123");
         u = uporabnikRepository.save(u);
     }
-
+    // Ustvarjanje testnega recepta pred vsakim testom
     @BeforeEach
     void createRecept() {
-        // Ustvarjanje testnega recepta
         newRecept = new Recept();
         newRecept.setIme("Test Recept");
         newRecept.setTip("Sladica");
@@ -57,7 +56,7 @@ public class BrisanjeReceptTest {
         newRecept.setUporabnik(u);
         newRecept.setPovprecnaOcena(0.0);
 
-        //Sestavine
+        // Dodajanje ene sestavine
         Sestavina s = new Sestavina();
         s.setIme("Moka");
         s.setRecept(newRecept);
@@ -76,13 +75,14 @@ public class BrisanjeReceptTest {
             uporabnikRepository.deleteById(u.getId());
         }
     }
-
+    // Test preverja, ali metoda pravilno vrne sporočilo o uspešnem brisanju recepta
     @Test
     void testDeleteRecept_SuccessMessage() {
         String response = receptController.deleteRecept(newRecept.getId());
         assertEquals("Recept z ID " + newRecept.getId() + " je bil izbrisan.", response);
 
     }
+    // Test preverja, ali je recept po klicu metode dejansko odstranjen iz baze
     @Test
     void testDeleteRecept_Success() {
         String response = receptController.deleteRecept(newRecept.getId());
@@ -90,6 +90,7 @@ public class BrisanjeReceptTest {
         assertFalse(receptRepository.existsById(newRecept.getId()));
     }
 
+    // Test preverja, ali metoda pravilno ravna z neobstoječim ID-jem in vrne ustrezno sporočilo
     @Test
     void testDeleteRecept_NotFound() {
         long nonExistingId = 999L;
