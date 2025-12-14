@@ -19,6 +19,15 @@
   - **testDeleteRecept_NotFound:** Preverja, da metoda pravilno ravna z neobstoječim ID-jem in vrne ustrezno sporočilo.
 - **Zakaj je pomembno:** Zagotavlja, da funkcija za brisanje receptov deluje pravilno, se lahko izbriše samo obstoječi recept in ne pusti nezaželenih zapisov v bazi. Prav tako metoda vrne ustrezno sporočilo tudi, če ID ne obstaja.
 
+### 1.3 KomentiranjeReceptaTest
+- **Kaj testira:**
+  - **ustvariKomentar_Obstaja:** Preverja, da se komentar uspešno ustvari, da vsebuje dodeljen id in da komentar dejansko obstaja v bazi.
+  - **ustvariKomentar_VsebinainRelacije:** Preverja, da se vsebina komentarja pravilno shrani in da so v odgovoru pravilno nastavljeni uporabnikId ter receptId.
+  - **ustvariKomentar_BrezVsebine:** Preverja, da kontroler zavrne komentar brez vsebine (prazno besedilo / presledki) z napako BAD_REQUEST, ter da se komentar ne shrani v bazo.
+  - **ustvariKomentar_NiUporabnika:** Preverja, da ob neobstoječem uporabniku (neveljaven uporabnikId) kontroler vrne napako NOT_FOUND, ter da se komentar ne shrani.
+  - **ustvariKomentar_NiRecepta** Preverja, da ob neobstoječem receptu (neveljaven receptId) kontroler vrne napako NOT_FOUND, ter da se komentar ne shrani v bazo.
+  - **ustvariKomentar_NullRequest** Preverja da ob null requestu kontroller vrne napako BAD_REQUEST, ter da se komentar ne shrani v bazo.
+- **Zakaj je pomembno:** zagotavlja, da se komentarji ustvarjajo pravilno, da so povezani s pravilnim uporabnikom in receptom, ter da backend pravilno validira vhodne podatke in ne omogoča shranjevanja neveljavnih komentarjev.
 ---
 
 ## 2. Člani skupine in odgovornosti
@@ -36,7 +45,7 @@ Pri prvem testiranju je test padel, ker smo dovolili, da se recept ustvari brez 
 
 - **Brisanje recepta:** testi so pokazali, da je možno izbrisati samo obstoječi recept in da metoda vrne ustrezno sporočilo o brisanju. Tudi ob poskusu brisanja recepta z neobstoječim ID-jem metoda vrne ustrezno obvestilo. 
 
-
+- **Komentiranje recepta:** pri pripravi testov ustvarjanja komentarjev testi sprva niso padali, so pa pokazali pomanjkljivosti v implementaciji kontrolerja za ustvarjanje komentarjev: pri napačnih podatkih je vračal null in ni jasno ločil med napakami (neobstoječ recept/uporabnik, neveljavna vsebina).Kontroler smo izboljšali tako, da zdaj ob napakah vrne ResponseStatusException z ustreznimi statusi in preverja tudi isBlank() za vsebino. Teste komentiranja smo prilagodili novi logiki in dodali preverjanje count(), da ob napaki ne pride do shranjevanja komentarja v bazo.
 ---
 
 ## 4. Zaključek
