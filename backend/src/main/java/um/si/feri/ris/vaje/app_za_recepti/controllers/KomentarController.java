@@ -1,7 +1,9 @@
 package um.si.feri.ris.vaje.app_za_recepti.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import um.si.feri.ris.vaje.app_za_recepti.dao.KomentarRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
@@ -46,22 +48,27 @@ public class KomentarController {
             Long receptId
     ) {}
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/recept/{receptId}/ustvariKom")
     public KomentarResponse ustvariKomentar(@PathVariable Long receptId, @RequestBody KomentarRequest request) {
-        Optional<Uporabnik> uporabnik = uporabnikRepository.findById(request.uporabnikId);
-        Optional<Recept> recept = receptRepository.findById(receptId);
-
-        if (recept.isPresent() && uporabnik.isPresent()) {
-            Komentar komentar = new Komentar();
-            komentar.setUporabnik(uporabnik.get());
-            komentar.setRecept(recept.get());
-            komentar.setVsebina(request.vsebina);
-
-            //komentarRepository.save(komentar);
-             Komentar shranjenKomentar =komentarRepository.save(komentar);
-            return new KomentarResponse(shranjenKomentar.getId(), shranjenKomentar.getVsebina(), shranjenKomentar.getUporabnik().getId(), shranjenKomentar.getUporabnik().getIme(),shranjenKomentar.getRecept().getId());
+        if (request == null || request.uporabnikId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "uporabnikId je obvezen");
         }
-        return null;
+        if (request.vsebina == null || request.vsebina.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "vsebina komentarja je obvezna");
+        }
+
+        Uporabnik uporabnik = uporabnikRepository.findById(request.uporabnikId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Uporabnik ne obstaja"));
+        Recept recept = receptRepository.findById(receptId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recept ne obstaja"));
+
+        Komentar komentar = new Komentar();
+
+        komentar.setUporabnik(uporabnik);
+        komentar.setRecept(recept);
+        komentar.setVsebina(request.vsebina);
+
+        Komentar shranjenKomentar =komentarRepository.save(komentar);
+        return new KomentarResponse(shranjenKomentar.getId(), shranjenKomentar.getVsebina(), shranjenKomentar.getUporabnik().getId(), shranjenKomentar.getUporabnik().getIme(),shranjenKomentar.getRecept().getId());
     }
     @DeleteMapping("/recept/{receptId}/izbrisi/{idKom}")
     public void izbrisiKomentar(@PathVariable Long receptId, @PathVariable Long idKom) {
