@@ -28,6 +28,20 @@
   - **ustvariKomentar_NiRecepta** Preverja, da ob neobstoječem receptu (neveljaven receptId) kontroler vrne napako NOT_FOUND, ter da se komentar ne shrani v bazo.
   - **ustvariKomentar_NullRequest** Preverja da ob null requestu kontroller vrne napako BAD_REQUEST, ter da se komentar ne shrani v bazo.
 - **Zakaj je pomembno:** zagotavlja, da se komentarji ustvarjajo pravilno, da so povezani s pravilnim uporabnikom in receptom, ter da backend pravilno validira vhodne podatke in ne omogoča shranjevanja neveljavnih komentarjev.
+
+### 1.4 OcenjevanjeReceptaTest
+- **Kaj testira:**
+  - **dodajOcenoUspesno:** Preverja, ali se ocena uspešno doda receptu in poveže z uporabnikom.
+  - **posodobiOcenoUspesno:** Preverja, ali se obstoječa ocena posodobi, če uporabnik ponovno oceni isti recept.
+  - **dodajOcenoNeuspesnoNiUporabnika:** Preverja, da se ocena ne shrani, če uporabnik ne obstaja (vrne 404).
+- **Zakaj je pomembno:** Zagotavlja, da lahko uporabniki ocenjujejo recepte, da se ocene pravilno shranjujejo in posodabljajo ter da sistem preprečuje ocenjevanje s strani neobstoječih uporabnikov.
+
+### 1.5 PridobiOcenoTest
+- **Kaj testira:**
+  - **vrniMojoOcenoObstaja:** Preverja, ali metoda vrne pravilno oceno, če je uporabnik recept že ocenil.
+  - **vrniMojoOcenoNeObstaja:** Preverja, ali metoda vrne 0, če uporabnik recepta še ni ocenil.
+  - **vrniMojoOcenoNeobstojecRecept:** Preverja, ali metoda vrne 0, če recept ne obstaja.
+- **Zakaj je pomembno:** Omogoča uporabniku vpogled v svojo oceno za določen recept in pravilno obravnava primere, ko ocena ali recept ne obstajajo.
 ---
 
 ## 2. Člani skupine in odgovornosti
@@ -46,6 +60,8 @@ Pri prvem testiranju je test padel, ker smo dovolili, da se recept ustvari brez 
 - **Brisanje recepta:** testi so pokazali, da je možno izbrisati samo obstoječi recept in da metoda vrne ustrezno sporočilo o brisanju. Tudi ob poskusu brisanja recepta z neobstoječim ID-jem metoda vrne ustrezno obvestilo. 
 
 - **Komentiranje recepta:** pri pripravi testov ustvarjanja komentarjev testi sprva niso padali, so pa pokazali pomanjkljivosti v implementaciji kontrolerja za ustvarjanje komentarjev: pri napačnih podatkih je vračal null in ni jasno ločil med napakami (neobstoječ recept/uporabnik, neveljavna vsebina).Kontroler smo izboljšali tako, da zdaj ob napakah vrne ResponseStatusException z ustreznimi statusi in preverja tudi isBlank() za vsebino. Teste komentiranja smo prilagodili novi logiki in dodali preverjanje count(), da ob napaki ne pride do shranjevanja komentarja v bazo.
+
+- **Ocenjevanje recepta:** Testi so potrdili, da funkcionalnost ocenjevanja deluje pravilno. Uspešno smo preverili dodajanje novih ocen, posodabljanje obstoječih ocen (kjer se preveri, da en uporabnik ne more imeti več ocen za isti recept) in pridobivanje ocene za določenega uporabnika. Tudi smo pokrili druge primere, kot so ocenjevanje s strani neobstoječega uporabnika ali pridobivanje ocene za neobstoječ recept, kjer sistem pravilno vrne ustrezne statusne kode ali privzete vrednosti.
 ---
 
 ## 4. Zaključek
