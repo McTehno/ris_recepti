@@ -19,6 +19,8 @@ public class Sestavina {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String ime;
+    private double kolicina;
+    private String enota;
 
     @ManyToOne
     @JoinColumn(name = "recept_id") // tocna kolona vo tabelata Recept sto go cuva id-to od korisnikot

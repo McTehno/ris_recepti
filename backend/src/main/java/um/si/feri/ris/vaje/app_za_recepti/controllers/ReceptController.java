@@ -46,6 +46,10 @@ public class ReceptController {
             return null;
         }
 
+        if (recept.getSt_porcij() < 1) {
+            return null;
+        }
+
         for (Sestavina s : recept.getSestavine()) {
             s.setRecept(recept);
         }
@@ -67,9 +71,15 @@ public class ReceptController {
 
         if (receptOptional.isPresent()) {
             Recept recept = receptOptional.get();
+
+            if (noviPodatki.getSt_porcij() < 1) {
+                return null;
+            }
+
             recept.setIme(noviPodatki.getIme());
             recept.setPriprava(noviPodatki.getPriprava());
             recept.setTip(noviPodatki.getTip());
+            recept.setSt_porcij(noviPodatki.getSt_porcij());
 
             //ako sostojki ne se podadeni da se inicijaliziret
             if (recept.getSestavine() == null) {

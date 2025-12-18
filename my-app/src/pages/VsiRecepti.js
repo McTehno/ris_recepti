@@ -57,6 +57,7 @@ function VsiRecepti() {
         <p><strong>Datum:</strong> {recept.datumUstvarjanja}</p>
         <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
         <p><strong>Tip:</strong> {recept.tip}</p>
+        <p><strong>Porcij:</strong> {recept.st_porcij}</p>
         
       </div>
     ))

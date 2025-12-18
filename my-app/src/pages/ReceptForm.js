@@ -12,7 +12,8 @@ function ReceptForm() {
     ime: "",
     tip: "",
     priprava: "",
-    sestavine: [{ ime: "" }]
+    st_porcij: 1,
+    sestavine: [{ ime: "", kolicina: 0, enota: "" }]
   });
   useEffect(() => {
   if (!userId) {
@@ -28,7 +29,7 @@ function ReceptForm() {
         .then(res => {
           setRecept({
             ...res.data,
-            sestavine: res.data.sestavine.length > 0 ? res.data.sestavine : [{ ime: "" }]
+            sestavine: res.data.sestavine.length > 0 ? res.data.sestavine : [{ ime: "", kolicina: 0, enota: "" }]
           });
         })
         .catch(err => console.error(err));
@@ -38,9 +39,13 @@ function ReceptForm() {
   //promena za input poleto
   const handleChange = (e, index) => {
     const { name, value } = e.target;  //name odd input elementot, value od input elementot //e.target e input elementot
-    if (name === "sestavina") {
+    if (name === "sestavina" || name === "kolicina" || name === "enota") {
       const newSestavine = [...recept.sestavine];
-      newSestavine[index].ime = value;
+      if (name === "sestavina") {
+        newSestavine[index].ime = value;
+      } else {
+        newSestavine[index][name] = value;
+      }
       setRecept({ ...recept, sestavine: newSestavine });
     } else {
       setRecept({ ...recept, [name]: value });
@@ -48,7 +53,7 @@ function ReceptForm() {
   };
 
   const handleAddSestavina = () => {
-    setRecept({ ...recept, sestavine: [...recept.sestavine, { ime: "" }] });
+    setRecept({ ...recept, sestavine: [...recept.sestavine, { ime: "", kolicina: 0, enota: "" }] });
   };
 
   // Funkcija za brisenje edna sostojka
@@ -69,7 +74,9 @@ const handleRemoveSestavina = (index) => {
   const ocisceneSestavine = recept.sestavine.map(sestavina => {
       return {
         id: sestavina.id, // Id ohranimo za urejanje
-        ime: sestavina.ime
+        ime: sestavina.ime,
+        kolicina: sestavina.kolicina,
+        enota: sestavina.enota
         // ne vkljucujemo recept tukaj ker se dogaja se en infinite loop pri parse-anju
       };
     });
@@ -78,10 +85,16 @@ const handleRemoveSestavina = (index) => {
     return; 
   }
 
+  if (recept.st_porcij < 1) {
+    alert("Število porcij mora biti vsaj 1!");
+    return;
+  }
+
   const receptZaPosiljanje = {
       ime: recept.ime,
       tip: recept.tip,
       priprava: recept.priprava,
+      st_porcij: recept.st_porcij,
       sestavine: ocisceneSestavine,
       uporabnik: { id: userId }
     };
@@ -106,6 +119,7 @@ const handleRemoveSestavina = (index) => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="ime" placeholder="Ime" value={recept.ime} onChange={handleChange} required />
         <input type="text" name="tip" placeholder="Tip" value={recept.tip} onChange={handleChange} required />
+        <input type="number" name="st_porcij" placeholder="Število porcij" value={recept.st_porcij} onChange={handleChange} min="1" required />
         <textarea name="priprava" placeholder="Priprava" value={recept.priprava} onChange={handleChange} />
 
         <h3>Sestavine</h3>
@@ -116,6 +130,22 @@ const handleRemoveSestavina = (index) => {
               name="sestavina"
               placeholder="Ime sestavine"
               value={s.ime}
+              onChange={(e) => handleChange(e, index)}
+              required
+            />
+            <input
+              type="number"
+              name="kolicina"
+              placeholder="Količina"
+              value={s.kolicina}
+              onChange={(e) => handleChange(e, index)}
+              required
+            />
+            <input
+              type="text"
+              name="enota"
+              placeholder="Enota (npr. g, ml)"
+              value={s.enota}
               onChange={(e) => handleChange(e, index)}
               required
             />

@@ -29,6 +29,7 @@ public class Recept {
     private double povprecnaOcena;
     @Lob //za cuvanje tekst
     private String priprava;
+    private int st_porcij = 1;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

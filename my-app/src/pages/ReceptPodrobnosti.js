@@ -110,6 +110,7 @@ function ReceptPodrobnosti() {
 
       <h2>{recept.ime}</h2>
       <p><strong>Tip:</strong> {recept.tip}</p>
+      <p><strong>Število porcij:</strong> {recept.st_porcij}</p>
       <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
       <p><strong>Priprava:</strong> {recept.priprava}</p>
       <p><strong>Uporabnik:</strong>{recept.uporabnik ? `${recept.uporabnik.ime} ${recept.uporabnik.priimek}` : "Neznan avtor"}</p>
@@ -118,7 +119,7 @@ function ReceptPodrobnosti() {
       {sestavine.length > 0 ? (
         <ul>
           {sestavine.map(s => (
-            <li key={s.id}>{s.ime}</li>
+            <li key={s.id}>{s.ime}: {s.kolicina} {s.enota}</li>
           ))}
         </ul>
       ) : (
