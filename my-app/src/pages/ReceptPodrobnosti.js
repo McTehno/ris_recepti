@@ -9,6 +9,13 @@ function ReceptPodrobnosti() {
   const { id } = useParams();// id recepta
   const [recept, setRecept] = useState(null);
   const [sestavine, setSestavine] = useState([]);
+
+  //STEVILO PORCIJE
+  const [porcije, setPorcije] = useState(recept?.st_porcij || 1);
+
+  //Originalne sestavine iz zacetka
+  const [sestavineOriginal, setSestavineOriginal] = useState([]);
+
   //--- ZA OCENEVANJE ---
   const userId = sessionStorage.getItem('userId'); // dobimo id trenutnega uporabnika
   const [mojaOcena, setMojaOcena] = useState(0); // izbrana ocena (0 j brez ocene)
@@ -21,7 +28,10 @@ function ReceptPodrobnosti() {
     fetchRecept();
     // Povik za sastojkite
     api.get(`/sestavine/recept/${id}`)
-      .then(response => setSestavine(response.data))
+      .then(response => {
+        setSestavine(response.data); 
+        setSestavineOriginal(response.data);
+      })
       .catch(err => console.error("Greska pri dobivanje na sostojki:", err));
   }, [id]);
 
@@ -35,6 +45,13 @@ function ReceptPodrobnosti() {
         }
     }
   }, [recept, userId]);
+
+    useEffect(() => {
+      if (recept) {
+        setPorcije(recept.st_porcij);
+      }
+    }, [recept]);
+
 
   const fetchRecept = () => {
     api.get(`/recepti/${id}`)
@@ -62,6 +79,29 @@ function ReceptPodrobnosti() {
       setSporocilo("");
     }, 3000);
   };
+
+  //Handler za spreminjanje input polja za st porcije
+
+const handlePorcijeChange = (e) => {
+  const novaVrednost = Number(e.target.value);
+
+  if (novaVrednost < 1)
+     return; 
+
+  
+  const faktor = novaVrednost / recept.st_porcij;
+
+
+  const noveSestavine = sestavineOriginal.map(s => ({
+    ...s,
+    kolicina: Math.round(s.kolicina * faktor) // цел број
+  }));
+
+  setPorcije(novaVrednost);
+  setSestavine(noveSestavine);
+};
+
+
 
   const oddajOceno = async () => {
     if (!userId) {
@@ -110,7 +150,9 @@ function ReceptPodrobnosti() {
 
       <h2>{recept.ime}</h2>
       <p><strong>Tip:</strong> {recept.tip}</p>
-      <p><strong>Število porcij:</strong> {recept.st_porcij}</p>
+
+      <label><strong>Število porcij:</strong></label>
+      <input type="number" min="1" value={porcije} onChange={handlePorcijeChange}/>
       <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
       <p><strong>Priprava:</strong> {recept.priprava}</p>
       <p><strong>Uporabnik:</strong>{recept.uporabnik ? `${recept.uporabnik.ime} ${recept.uporabnik.priimek}` : "Neznan avtor"}</p>

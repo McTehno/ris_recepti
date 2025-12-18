@@ -119,6 +119,7 @@ const handleRemoveSestavina = (index) => {
       <form onSubmit={handleSubmit}>
         <input type="text" name="ime" placeholder="Ime" value={recept.ime} onChange={handleChange} required />
         <input type="text" name="tip" placeholder="Tip" value={recept.tip} onChange={handleChange} required />
+        <label>Stevilo porcij:</label>
         <input type="number" name="st_porcij" placeholder="Število porcij" value={recept.st_porcij} onChange={handleChange} min="1" required />
         <textarea name="priprava" placeholder="Priprava" value={recept.priprava} onChange={handleChange} />
 
@@ -141,14 +142,22 @@ const handleRemoveSestavina = (index) => {
               onChange={(e) => handleChange(e, index)}
               required
             />
-            <input
-              type="text"
+            <select
               name="enota"
-              placeholder="Enota (npr. g, ml)"
               value={s.enota}
               onChange={(e) => handleChange(e, index)}
               required
-            />
+            >
+              <option value="">Izberi enoto</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="žlica">žlica</option>
+              <option value="čajna žlička">čajna žlička</option>
+              <option value="kos/i">kos/i</option>
+            </select>
+
             <button type="button" onClick={() => handleRemoveSestavina(index)}>Izbrisi</button>
           </div>
         ))}
