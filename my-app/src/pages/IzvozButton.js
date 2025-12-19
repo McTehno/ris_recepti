@@ -1,7 +1,7 @@
 import React from "react";
 import { jsPDF } from "jspdf";
 
-export default function IzvozButton({ recept, sestavine }) {
+export default function IzvozButton({ recept, sestavine, st_porcij }) {
   const generirajPDF = () => {
     const doc = new jsPDF();
 
@@ -18,11 +18,11 @@ export default function IzvozButton({ recept, sestavine }) {
     doc.setTextColor("#000000");
     doc.text(`Tip: ${recept.tip}`, 10, 35);
     doc.text(`Ocena: ${recept.povprecnaOcena || "Brez ocen"}`, 10, 45);
-
+    doc.text(`Stevilo porcij: ${st_porcij || recept.st_porcij || "1"}`, 10, 55);
     
     doc.setFontSize(14);
     doc.setTextColor("#ffb347");
-    doc.text("Priprava:", 10, 60);
+    doc.text("Priprava:", 10, 65);
 
     doc.setFontSize(12);
     doc.setTextColor("#000000");
@@ -38,7 +38,7 @@ export default function IzvozButton({ recept, sestavine }) {
     doc.setFontSize(12);
     doc.setTextColor("#000000");
     sestavine.forEach((s, i) => {
-      doc.text(`- ${s.ime}`, 10, 100 + pripravaLines.length * 10 + i * 10);
+      doc.text(`- ${s.ime}: ${s.kolicina} ${s.enota}`, 10, 100 + pripravaLines.length * 10 + i * 10);
     });
     // Background 
     doc.setFillColor(255, 239, 225); 
