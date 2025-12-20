@@ -1,4 +1,4 @@
-Scrum poročilo o napredku projekta 
+## Scrum poročilo o napredku projekta 
 
 ## Osnovni podatki
 - **Projekt:**Moji Recepti
