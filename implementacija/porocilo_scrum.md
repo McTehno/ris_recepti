@@ -1,7 +1,7 @@
 ## Scrum poročilo o napredku projekta 
 
 ## Osnovni podatki
-- **Projekt:**Moji Recepti
+- **Projekt:** Moji Recepti
 - **Metodologija:** Scrum
 - **Število iteracij:** 1 (en sprint)
 - **Orodje za sledenje dela:** GitHub Projects
