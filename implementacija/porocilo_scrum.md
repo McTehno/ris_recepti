@@ -42,8 +42,29 @@ Naloga je zaključena, ko:
 
 ### Backend naloge
 
+**Dodajanje atributa `st_porcij` v tabelo Recept**
+Namen naloge je bil razširiti tabelo Recept z atributom `st_porcij`, ki določa privzeto število porcij recepta.
+
+**Dodajanje atributov `kolicina` in `enota` v podatkovno bazo**
+V podatkovno bazo sta bila dodana atributa `kolicina` in `enota`, ki omogočata natančno določanje količin sestavin pri receptih.
+
+
 ### Frontend naloge
 
+**Sprememba komponente `ReceptPodrobnosti.js` za izpis PDF-a s točnimi količinami**
+Implementirana je bila logika, ki ob generiranju PDF-a izpiše izračunane količine sestavin glede na trenutni vnos števila porcij.
+
+**Dodajanje vnosnega polja za število porcij znotraj `ReceptPodrobnosti.js`**
+V komponento je bilo dodano vnosno polje, ki privzeto prikazuje vrednost iz atributa `st_porcij`. Vnos omogoča spreminjanje porcij in osvežitev izračuna količin sestavin.
+
+**Dodajanje vnosnega polja za število porcij znotraj `ReceptForm.js`**
+V obrazec za ustvarjanje ali urejanje recepta je bilo dodano novo vnosno polje, ki omogoča nastavitev privzetega števila porcij.
+
+**Dodajanje vnosnih polj `količina` in `enota` v `ReceptForm.js`**
+Obrazec je bil nadgrajen z možnostjo vnosa količine sestavine in enote merske enote (npr. g, ml, žlica).
+
+**Dodajanje dinamičnega izračuna količine sestavin znotraj `ReceptPodrobnosti.js`**
+Logika izračuna je bila implementirana tako, da se ob spremembi števila porcij avtomatsko preračunajo količine sestavin in posodobijo prikazane vrednosti.
 
 ## Izvedba sprinta
 Naloge (taski) so se premikale med stolpci *Backlog*, *Ready*, *In Progress*, *In Review* in *Done* na GitHub Project tabli, kar je omogočalo stalno spremljanje napredka.
