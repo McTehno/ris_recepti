@@ -29,7 +29,24 @@ Kot uporabnik želim možnost prilagoditve količin sestavin glede na število p
 ### Cilj sprinta
 Cilj sprinta je bil implementirati podporo za število porcij (st_porcije) skozi celoten sistem – od podatkovne baze do uporabniškega vmesnika in PDF izvoza.
 
-Pri sprint planiranju smo za naloge ocenili koliko časa bo potrebna za njeno izvedbo z metodo Planning Poker. 
+## Planning Poker
+
+Za ocenjevanje nalog v našem projektu smo uporabili **metodo Planning Poker**, pri kateri je bila enota za merjenje **minute**. Vsak član ekipe je neodvisno ocenil zahtevnost nalog, nato pa smo o ocenah razpravljali, da smo dosegli konsenz.  
+
+Ocenjene minute za posamezno nalogo so naslednje:  
+
+### Backend naloge
+- Dodajanje atributa `st_porcij` v tabelo `Recept`: **20 min**  
+- Dodajanje atributov `kolicina` in `enota` v podatkovno bazo: **20 min**  
+
+### Frontend naloge
+- Sprememba komponente `ReceptPodrobnosti.js` za izvoz PDF z natančnimi količinami: **60 min**  
+- Dodajanje vnosnega polja za število porcij znotraj `ReceptPodrobnosti.js`: **30 min**  
+- Dodajanje vnosnega polja za število porcij znotraj `ReceptForm.js`: **30 min**  
+- Dodajanje vnosnih polj `količina` in `enota` v `ReceptForm.js`: **60 min**  
+- Dodajanje dinamičnega izračuna količin znotraj `ReceptPodrobnosti.js`: **60 min**  
+
+Uporaba te metode je omogočila natančno in realno oceno časa za izvedbo nalog ter boljšo organizacijo delovnega procesa.
 
 ### Definition of Done
 Naloga je zaključena, ko:
