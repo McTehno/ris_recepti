@@ -29,7 +29,7 @@ Kot uporabnik želim možnost prilagoditve količin sestavin glede na število p
 ### Cilj sprinta
 Cilj sprinta je bil implementirati podporo za število porcij (st_porcije) skozi celoten sistem – od podatkovne baze do uporabniškega vmesnika in PDF izvoza.
 
-## Planning Poker
+### Planning Poker
 
 Za ocenjevanje nalog v našem projektu smo uporabili **metodo Planning Poker**, pri kateri je bila enota za merjenje **minute**. Vsak član ekipe je neodvisno ocenil zahtevnost nalog, nato pa smo o ocenah razpravljali, da smo dosegli konsenz.  
 
