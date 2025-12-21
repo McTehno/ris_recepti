@@ -29,6 +29,8 @@ Kot uporabnik želim možnost prilagoditve količin sestavin glede na število p
 ### Cilj sprinta
 Cilj sprinta je bil implementirati podporo za število porcij (st_porcije) skozi celoten sistem – od podatkovne baze do uporabniškega vmesnika in PDF izvoza.
 
+Pri sprint planiranju smo za naloge ocenili koliko časa bo potrebna za njeno izvedbo z metodo Planning Poker. 
+
 ### Definition of Done
 Naloga je zaključena, ko:
 - je funkcionalnost implementirana,
