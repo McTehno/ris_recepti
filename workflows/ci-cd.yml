@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # Priporočeno za novejše verzije
+          java-version: '23'      # Popravljeno na 23
+          cache: maven
+      - name: Build backend
+        working-directory: backend
+        run: mvn -B package --file pom.xml -DskipTests
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: build-backend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: my-app # Popravljeno na my-app
+        run: npm install
+      - name: Build frontend
+        working-directory: my-app # Popravljeno na my-app
+        run: npm run build
+
+  test-backend:
+    runs-on: ubuntu-latest
+    needs: build-backend
+    services: # Boljši način za MySQL
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ris
+        ports:
+          - 3369:3306 # Mapiranje porta 3369 (iz app.properties) na 3306 v kontejnerju
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+      - name: Run backend tests
+        working-directory: backend
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3369/ris
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: root
+        run: mvn test
