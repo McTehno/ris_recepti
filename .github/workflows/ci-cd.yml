@@ -41,6 +41,8 @@ jobs:
   # 2. Gradnja in testiranje Frontenda
   frontend-task:
     runs-on: ubuntu-latest
+    #dodano
+    needs: backend-task   
     steps:
       - uses: actions/checkout@v3
       
