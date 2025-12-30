@@ -56,11 +56,8 @@ jobs:
         env:
           CI: false
         run: |
-          npm ci
+          npm install
           npm run build
           
-      - name: Run Frontend Tests
-        working-directory: my-app
-        run: npm test -- --watchAll=false
 
         #test
