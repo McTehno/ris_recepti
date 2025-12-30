@@ -4,12 +4,12 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main, develop ] # To zagotovi zagon ob PR na main ali develop
-    types: [opened, synchronize, reopened] # Sproži se ob odprtju ali novih commitih v PR
+    branches: [ main, develop ]
+    types: [opened, synchronize, reopened]
 
 jobs:
-  # 1. Gradnja in testiranje Backenda
-  backend-task:
+  # 1. Build Backend
+  backend-build-task:
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -18,46 +18,65 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: ris
         ports:
-          - 3369:3306 # Mapiranje porta 3369 (ki ga imaš v app.properties) na 3306 v bazi
+          - 3369:3306
     steps:
       - uses: actions/checkout@v3
-      
       - name: Setup Java 23
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '23'
           cache: maven
-          
-      - name: Build and Test Backend
+      - name: Build Backend
         working-directory: backend
         env:
-          # Preglasimo nastavitve baze za CI okolje
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3369/ris
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
-        run: mvn -B test
+        run: mvn -B package -DskipTests
 
-  # 2. Gradnja in testiranje Frontenda
+  # 2. Build Frontend
   frontend-task:
     runs-on: ubuntu-latest
-    #dodano
-    needs: backend-task   
+    needs: backend-build-task
     steps:
       - uses: actions/checkout@v3
-      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          
       - name: Install and Build Frontend
-        working-directory: my-app # Popravljeno na tvojo dejansko mapo
+        working-directory: my-app
         env:
           CI: false
         run: |
           npm install
           npm run build
-          
 
-        #test
+  # 3. Test Backend
+  backend-test-task:
+    runs-on: ubuntu-latest
+    needs: frontend-task
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ris
+        ports:
+          - 3369:3306
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java 23
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+          cache: maven
+      - name: Run Backend Tests
+        working-directory: backend
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3369/ris
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: root
+        run: mvn -B test
