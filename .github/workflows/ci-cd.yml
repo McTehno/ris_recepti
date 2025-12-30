@@ -4,63 +4,57 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop ] # To zagotovi zagon ob PR na main ali develop
+    types: [opened, synchronize, reopened] # Sproži se ob odprtju ali novih commitih v PR
 
 jobs:
-  build-backend:
+  # 1. Gradnja in testiranje Backenda
+  backend-task:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin' # Priporočeno za novejše verzije
-          java-version: '23'      # Popravljeno na 23
-          cache: maven
-      - name: Build backend
-        working-directory: backend
-        run: mvn -B package --file pom.xml -DskipTests
-
-  build-frontend:
-    runs-on: ubuntu-latest
-    needs: build-backend
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        working-directory: my-app # Popravljeno na my-app
-        run: npm install
-      - name: Build frontend
-        working-directory: my-app # Popravljeno na my-app
-        run: npm run build
-
-  test-backend:
-    runs-on: ubuntu-latest
-    needs: build-backend
-    services: # Boljši način za MySQL
+    services:
       mysql:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: ris
         ports:
-          - 3369:3306 # Mapiranje porta 3369 (iz app.properties) na 3306 v kontejnerju
+          - 3369:3306 # Mapiranje porta 3369 (ki ga imaš v app.properties) na 3306 v bazi
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Java
+      
+      - name: Setup Java 23
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '23'
-      - name: Run backend tests
+          cache: maven
+          
+      - name: Build and Test Backend
         working-directory: backend
         env:
+          # Preglasimo nastavitve baze za CI okolje
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3369/ris
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
-        run: mvn test
+        run: mvn -B test
 
-        #preverba2
+  # 2. Gradnja in testiranje Frontenda
+  frontend-task:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Install and Build Frontend
+        working-directory: my-app # Popravljeno na tvojo dejansko mapo
+        run: |
+          npm install
+          npm run build
+          
+      - name: Run Frontend Tests
+        working-directory: my-app
+        run: npm test -- --watchAll=false
