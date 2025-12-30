@@ -51,6 +51,8 @@ jobs:
           
       - name: Install and Build Frontend
         working-directory: my-app # Popravljeno na tvojo dejansko mapo
+        env:
+          CI: false
         run: |
           npm install
           npm run build
