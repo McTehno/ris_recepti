@@ -63,4 +63,4 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: root
         run: mvn test
 
-        #preverba
+        #preverba2
