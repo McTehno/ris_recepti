@@ -1,4 +1,3 @@
-Lala
 # Projekt: Aplikacija za recepte (RIS)
 ## Poslovni Problem in Rešitev
 ### Problem
