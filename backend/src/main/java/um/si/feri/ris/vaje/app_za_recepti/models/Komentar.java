@@ -1,5 +1,5 @@
 package um.si.feri.ris.vaje.app_za_recepti.models;
-
+//komentarji za recepte
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
