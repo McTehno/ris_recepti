@@ -8,13 +8,19 @@ function ReceptForm() {
   const { id } = useParams(userId); //ako ima id togas edit, ako ne ustvari
   const navigate = useNavigate();
 
+ 
   const [recept, setRecept] = useState({
-    ime: "",
-    tip: "",
-    priprava: "",
-    st_porcij: 1,
-    sestavine: [{ ime: "", kolicina: 0, enota: "" }]
+      ime: "",
+      tip: "",
+      priprava: "",
+      st_porcij: 1,
+      sestavine: [{ ime: "", kolicina: 0, enota: "" }],
+      hranilneVrednosti: [
+        { energija: 0, bjelankovine: 0, ogljikoviHidrati: 0, mascobe: 0 }
+      ]
   });
+
+
   useEffect(() => {
   if (!userId) {
       navigate('/login');
@@ -50,6 +56,12 @@ function ReceptForm() {
     } else {
       setRecept({ ...recept, [name]: value });
     }
+  };
+  const handleChangeHranilne = (e, index) => {
+    const { name, value } = e.target;
+    const novaHranilna = [...recept.hranilneVrednosti];
+    novaHranilna[index][name] = Number(value); // сите вредности се броеви
+    setRecept({ ...recept, hranilneVrednosti: novaHranilna });
   };
 
   const handleAddSestavina = () => {
@@ -96,6 +108,7 @@ const handleRemoveSestavina = (index) => {
       priprava: recept.priprava,
       st_porcij: recept.st_porcij,
       sestavine: ocisceneSestavine,
+      hranilneVrednosti: recept.hranilneVrednosti,
       uporabnik: { id: userId }
     };
 
@@ -164,6 +177,58 @@ const handleRemoveSestavina = (index) => {
         <button type="button" onClick={handleAddSestavina}>Dodaj sestavina</button>
 
         <br /><br />
+
+        <h3>Hranilne vrednosti</h3>
+          <div style={{ marginBottom: "5px" }}>
+            <label>Energija (kcal):</label>
+            <input
+              type="number"
+              name="energija"
+              placeholder="Energija"
+              value={recept.hranilneVrednosti[0].energija}
+              onChange={(e) => handleChangeHranilne(e, 0)}
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: "5px" }}>
+            <label>Beljakovine (g):</label>
+            <input
+              type="number"
+              name="bjelankovine"
+              placeholder="Beljakovine"
+              value={recept.hranilneVrednosti[0].bjelankovine}
+              onChange={(e) => handleChangeHranilne(e, 0)}
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: "5px" }}>
+            <label>Ogljikovi hidrati (g):</label>
+            <input
+              type="number"
+              name="ogljikoviHidrati"
+              placeholder="Ogljikovi hidrati"
+              value={recept.hranilneVrednosti[0].ogljikoviHidrati}
+              onChange={(e) => handleChangeHranilne(e, 0)}
+              required
+            />
+          </div>
+
+          <div style={{ marginBottom: "5px" }}>
+            <label>Maščobe (g):</label>
+            <input
+                type="number"
+                name="mascobe"
+                placeholder="Maščobe"
+                value={recept.hranilneVrednosti[0].mascobe}
+                onChange={(e) => handleChangeHranilne(e, 0)}
+                required
+            />
+          </div>
+
+
+
         <button type="submit">{id ? "Spremeni" : "Ustvari"}</button>
       </form>
     </div>
