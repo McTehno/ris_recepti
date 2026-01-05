@@ -1,8 +1,10 @@
 package um.si.feri.ris.vaje.app_za_recepti.dao;
 import org.springframework.data.repository.CrudRepository;
 import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
+import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
+
+import java.util.List;
 
 public interface HranilneVrednostiRepository  extends CrudRepository<HranilneVrednosti, Long> {
-
-    
+    List<HranilneVrednosti> findByReceptId(Long receptId);
 }  

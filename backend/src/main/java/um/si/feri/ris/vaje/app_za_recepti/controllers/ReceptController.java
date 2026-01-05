@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -41,8 +42,13 @@ public class ReceptController {
     // ustvarjanje novega recepta
     @PostMapping("/post")
     public Recept createRecept(@RequestBody Recept recept) {
-        // dodano da se recept ne more ustvariti brez sestavine
+        // recept mora imeti vsaj eno sestavino
         if (recept.getSestavine() == null || recept.getSestavine().isEmpty()) {
+            return null;
+        }
+
+        // recept mora imeti vsaj eno hranilno vrednost
+        if (recept.getHranilneVrednosti() == null || recept.getHranilneVrednosti().isEmpty()) {
             return null;
         }
 
@@ -50,11 +56,19 @@ public class ReceptController {
             return null;
         }
 
+        // povezujemo vsako sestavino z receptom
         for (Sestavina s : recept.getSestavine()) {
             s.setRecept(recept);
         }
+
+        // povezujemo vsaka hranilna vrednost z receptom
+        for (HranilneVrednosti hv : recept.getHranilneVrednosti()) {
+            hv.setRecept(recept);
+        }
+
         return receptRepository.save(recept);
     }
+
 
 
     // Podrobnosti enega recepta
@@ -63,6 +77,8 @@ public class ReceptController {
         Optional<Recept> recept = receptRepository.findById(id);
         return recept.orElse(null);
     }
+
+    /*
     @PutMapping("/{id}")
     @Transactional
     public Recept updateRecept(@PathVariable Long id, @RequestBody Recept noviPodatki) {
@@ -102,7 +118,56 @@ public class ReceptController {
         }
     }
 
+    */
 
+    @PutMapping("/{id}")
+    @Transactional
+    public Recept updateRecept(@PathVariable Long id, @RequestBody Recept noviPodatki) {
+        Optional<Recept> receptOptional = receptRepository.findById(id);
+
+        if (receptOptional.isPresent()) {
+            Recept recept = receptOptional.get();
+
+            if (noviPodatki.getSt_porcij() < 1) {
+                return null;
+            }
+
+            recept.setIme(noviPodatki.getIme());
+            recept.setPriprava(noviPodatki.getPriprava());
+            recept.setTip(noviPodatki.getTip());
+            recept.setSt_porcij(noviPodatki.getSt_porcij());
+
+            // ---------- Sestavine ----------
+            if (recept.getSestavine() == null) {
+                recept.setSestavine(new ArrayList<>());
+            } else {
+                recept.getSestavine().clear();
+            }
+            if (noviPodatki.getSestavine() != null) {
+                for (Sestavina s : noviPodatki.getSestavine()) {
+                    s.setRecept(recept);
+                    recept.getSestavine().add(s);
+                }
+            }
+
+            // ---------- HranilneVrednosti ----------
+            if (recept.getHranilneVrednosti() == null) {
+                recept.setHranilneVrednosti(new ArrayList<>());
+            } else {
+                recept.getHranilneVrednosti().clear();
+            }
+            if (noviPodatki.getHranilneVrednosti() != null) {
+                for (HranilneVrednosti hv : noviPodatki.getHranilneVrednosti()) {
+                    hv.setRecept(recept);
+                    recept.getHranilneVrednosti().add(hv);
+                }
+            }
+
+            return receptRepository.save(recept);
+        } else {
+            return null;
+        }
+    }
     // Brisanje recepta po id
     @DeleteMapping("/{id}")
     public String deleteRecept(@PathVariable Long id) {
