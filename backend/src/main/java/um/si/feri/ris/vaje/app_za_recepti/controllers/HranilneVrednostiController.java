@@ -21,19 +21,19 @@ public class HranilneVrednostiController {
     @Autowired
     private ReceptRepository receptRepository;
 
-    // READ – сите
+    // GET vse mozne
     @GetMapping
     public List<HranilneVrednosti> getAll() {
         return (List<HranilneVrednosti>) hranilneVrednostiRepository.findAll();
     }
 
-    // READ – една
+    // GET
     @GetMapping("/{id}")
     public HranilneVrednosti getById(@PathVariable Long id) {
-        return hranilneVrednostiRepository.findById(id).orElse(null);
+        return hranilneVrednostiRepository.findByReceptId(id);
     }
 
-    // CREATE
+    // CREATE –ustvarjam novi
     @PostMapping
     public HranilneVrednosti create(@RequestBody HranilneVrednosti hv) {
         return hranilneVrednostiRepository.save(hv);
@@ -42,17 +42,15 @@ public class HranilneVrednostiController {
     // UPDATE
     @PutMapping("/{id}")
     public HranilneVrednosti update(@PathVariable Long id, @RequestBody HranilneVrednosti noviPodatki) {
-        Optional<HranilneVrednosti> optional = hranilneVrednostiRepository.findById(id);
-
-        if (optional.isPresent()) {
-            HranilneVrednosti hv = optional.get();
-            hv.setEnergija(noviPodatki.getEnergija());
-            hv.setBjelankovine(noviPodatki.getBjelankovine());
-            hv.setOgljikoviHidrati(noviPodatki.getOgljikoviHidrati());
-            hv.setMascobe(noviPodatki.getMascobe());
-            return hranilneVrednostiRepository.save(hv);
-        }
-        return null;
+        return hranilneVrednostiRepository.findById(id)
+                .map(hv -> {
+                    hv.setEnergija(noviPodatki.getEnergija());
+                    hv.setBjelankovine(noviPodatki.getBjelankovine());
+                    hv.setOgljikoviHidrati(noviPodatki.getOgljikoviHidrati());
+                    hv.setMascobe(noviPodatki.getMascobe());
+                    return hranilneVrednostiRepository.save(hv);
+                })
+                .orElse(null);
     }
 
     // DELETE
@@ -65,24 +63,59 @@ public class HranilneVrednostiController {
         return "Hranilne vrednosti ne obstajajo.";
     }
 
-    // READ – сите за рецепт
+    // GET za recept po id
     @GetMapping("/recept/{receptId}")
-    public List<HranilneVrednosti> getByRecept(@PathVariable Long receptId) {
+    public HranilneVrednosti getByRecept(@PathVariable Long receptId) {
+
         return hranilneVrednostiRepository.findByReceptId(receptId);
     }
 
-    // CREATE – додавање на рецепт
+    // CREATE
     @PostMapping("/recept/{receptId}")
-    public HranilneVrednosti addToRecept(
+    public HranilneVrednosti createForRecept(
             @PathVariable Long receptId,
             @RequestBody HranilneVrednosti hv) {
 
         Optional<Recept> receptOptional = receptRepository.findById(receptId);
 
         if (receptOptional.isPresent()) {
-            hv.setRecept(receptOptional.get());
+            Recept recept = receptOptional.get();
+
+            // ce ze ima je napaka
+            if (recept.getHranilneVrednosti() != null) {
+                return null;
+            }
+
+            hv.setRecept(recept);
+            recept.setHranilneVrednosti(hv);
             return hranilneVrednostiRepository.save(hv);
         }
         return null;
     }
+
+    // UPDATE – za posebni recept azuriranje
+    @PutMapping("/recept/{receptId}")
+    public HranilneVrednosti updateForRecept(
+            @PathVariable Long receptId,
+            @RequestBody HranilneVrednosti hv) {
+
+        Optional<Recept> receptOptional = receptRepository.findById(receptId);
+
+        if (receptOptional.isPresent()) {
+            Recept recept = receptOptional.get();
+            HranilneVrednosti existingHV = recept.getHranilneVrednosti();
+
+            if (existingHV != null) {
+                existingHV.setEnergija(hv.getEnergija());
+                existingHV.setBjelankovine(hv.getBjelankovine());
+                existingHV.setOgljikoviHidrati(hv.getOgljikoviHidrati());
+                existingHV.setMascobe(hv.getMascobe());
+                return hranilneVrednostiRepository.save(existingHV);
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
 }

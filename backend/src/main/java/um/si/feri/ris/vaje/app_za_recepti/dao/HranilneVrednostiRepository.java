@@ -6,5 +6,5 @@ import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
 import java.util.List;
 
 public interface HranilneVrednostiRepository  extends CrudRepository<HranilneVrednosti, Long> {
-    List<HranilneVrednosti> findByReceptId(Long receptId);
+    HranilneVrednosti findByReceptId(Long receptId);
 }  

@@ -52,9 +52,10 @@ public class Recept {
     @JsonIgnoreProperties("recept") // Prepreci zanko nazaj na recept
     private List<Ocena> ocene;
 
-    @OneToMany(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("recept") //da se izognemo infinite loopu ker sestavina vsebuje objekt tipa recept
-    private List<HranilneVrednosti> hranilneVrednosti;
+    @OneToOne(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("recept")
+    private HranilneVrednosti hranilneVrednosti;
+
 
     // --- POSLOVNA LOGIKA ---
     public void izracunajPovprecje() {

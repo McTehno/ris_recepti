@@ -42,13 +42,13 @@ public class ReceptController {
     // ustvarjanje novega recepta
     @PostMapping("/post")
     public Recept createRecept(@RequestBody Recept recept) {
-        // recept mora imeti vsaj eno sestavino
+        //vsaj ena sestavina
         if (recept.getSestavine() == null || recept.getSestavine().isEmpty()) {
             return null;
         }
 
-        // recept mora imeti vsaj eno hranilno vrednost
-        if (recept.getHranilneVrednosti() == null || recept.getHranilneVrednosti().isEmpty()) {
+        // ali imamo hranilne vrednosti
+        if (recept.getHranilneVrednosti() == null) {
             return null;
         }
 
@@ -56,15 +56,13 @@ public class ReceptController {
             return null;
         }
 
-        // povezujemo vsako sestavino z receptom
+        // povezujem sestavine z recept
         for (Sestavina s : recept.getSestavine()) {
             s.setRecept(recept);
         }
 
-        // povezujemo vsaka hranilna vrednost z receptom
-        for (HranilneVrednosti hv : recept.getHranilneVrednosti()) {
-            hv.setRecept(recept);
-        }
+        // povezujem hranilne vrednosti z recept
+        recept.getHranilneVrednosti().setRecept(recept);
 
         return receptRepository.save(recept);
     }
@@ -120,6 +118,7 @@ public class ReceptController {
 
     */
 
+
     @PutMapping("/{id}")
     @Transactional
     public Recept updateRecept(@PathVariable Long id, @RequestBody Recept noviPodatki) {
@@ -137,7 +136,7 @@ public class ReceptController {
             recept.setTip(noviPodatki.getTip());
             recept.setSt_porcij(noviPodatki.getSt_porcij());
 
-            // ---------- Sestavine ----------
+            // ---------- Sestavine----------
             if (recept.getSestavine() == null) {
                 recept.setSestavine(new ArrayList<>());
             } else {
@@ -150,17 +149,10 @@ public class ReceptController {
                 }
             }
 
-            // ---------- HranilneVrednosti ----------
-            if (recept.getHranilneVrednosti() == null) {
-                recept.setHranilneVrednosti(new ArrayList<>());
-            } else {
-                recept.getHranilneVrednosti().clear();
-            }
+            // ---------- Hranilne Vrednosti ----------
             if (noviPodatki.getHranilneVrednosti() != null) {
-                for (HranilneVrednosti hv : noviPodatki.getHranilneVrednosti()) {
-                    hv.setRecept(recept);
-                    recept.getHranilneVrednosti().add(hv);
-                }
+                noviPodatki.getHranilneVrednosti().setRecept(recept);
+                recept.setHranilneVrednosti(noviPodatki.getHranilneVrednosti());
             }
 
             return receptRepository.save(recept);
@@ -168,6 +160,7 @@ public class ReceptController {
             return null;
         }
     }
+
     // Brisanje recepta po id
     @DeleteMapping("/{id}")
     public String deleteRecept(@PathVariable Long id) {

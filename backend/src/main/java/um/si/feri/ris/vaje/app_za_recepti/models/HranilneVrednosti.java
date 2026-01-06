@@ -23,10 +23,9 @@ public class HranilneVrednosti {
     private double ogljikoviHidrati;
     private double mascobe;
 
-    @ManyToOne
-    @JoinColumn(name = "recept_id") // tocna kolona vo tabelata Recept sto go cuva id-to od korisnikot
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnoreProperties("hranilneVrednosti") //izognemo se infinite loopu ker se znotraj recepta nahaja hranilne vrednosti
+    @OneToOne
+    @JoinColumn(name = "recept_id")
+    @JsonIgnoreProperties("hranilneVrednosti")
     private Recept recept;
 
 }
