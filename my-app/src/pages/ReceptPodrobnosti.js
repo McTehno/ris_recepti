@@ -9,12 +9,16 @@ function ReceptPodrobnosti() {
   const { id } = useParams();// id recepta
   const [recept, setRecept] = useState(null);
   const [sestavine, setSestavine] = useState([]);
+  const [hranilneVrednosti, setHranilneVrednosti] = useState(null);
 
   //STEVILO PORCIJE
   const [porcije, setPorcije] = useState(recept?.st_porcij || 1);
 
   //Originalne sestavine iz zacetka
   const [sestavineOriginal, setSestavineOriginal] = useState([]);
+
+  //Originalne hranilneVrednosti 
+  const [hranilneVrednostiOriginal, setHranilneVOriginal] = useState(null);
 
   //--- ZA OCENEVANJE ---
   const userId = sessionStorage.getItem('userId'); // dobimo id trenutnega uporabnika
@@ -33,6 +37,15 @@ function ReceptPodrobnosti() {
         setSestavineOriginal(response.data);
       })
       .catch(err => console.error("Greska pri dobivanje na sostojki:", err));
+    
+    // za hranilne vrednosti glede na id recepta
+    api.get(`/hranilne-vrednosti/recept/${id}`)
+      .then(response => {
+        setHranilneVrednosti(response.data);
+        setHranilneVOriginal(response.data);
+      })
+      .catch(err => console.error("Error fetching nutritional values: ", err));
+
   }, [id]);
 
   // ko dobimo recept in imamo userId, preverimo dodatne pogoje (avtor ali ocena)
@@ -99,6 +112,18 @@ const handlePorcijeChange = (e) => {
 
   setPorcije(novaVrednost);
   setSestavine(noveSestavine);
+
+  if (hranilneVrednostiOriginal) {//pogoj da se ne sesuje če se ne pridobi hranilnih vrednosti
+    const noveHranilneVrednosti = {
+      ...hranilneVrednostiOriginal, 
+      energija: Math.round(hranilneVrednostiOriginal.energija * faktor),
+      bjelankovine: Math.round(hranilneVrednostiOriginal.bjelankovine * faktor),
+      ogljikoviHidrati: Math.round(hranilneVrednostiOriginal.ogljikoviHidrati * faktor),
+      mascobe: Math.round(hranilneVrednostiOriginal.mascobe * faktor)
+    };
+    setHranilneVrednosti(noveHranilneVrednosti);
+  }
+  
 };
 
 
@@ -166,7 +191,18 @@ const handlePorcijeChange = (e) => {
         </ul>
       ) : (
         <p>Nima sestavine za recept: {recept.ime}.</p>
-      )}{!jeAvtor && (
+      )}
+      <h3>Hranilne vrednosti</h3>
+      {hranilneVrednosti ? (
+        <ul key={hranilneVrednosti.id}>
+          <li>Energijska vrednost :{hranilneVrednosti.energija} (kcal)</li>
+          <li>Beljakovine: {hranilneVrednosti.bjelankovine} (g)</li>
+          <li>Ogljikovi hidrati: {hranilneVrednosti.ogljikoviHidrati} (g)</li>
+          <li>Mascobe: {hranilneVrednosti.mascobe} (g)</li>
+        </ul>
+      ):(<p>Recept ({recept.ime}) nima vnesenih hranilnih vrednosti</p>)
+      }
+      {!jeAvtor && (
       <div className="rating-wrapper">
           <div className="rating-stars">
             {[...Array(5)].map((star, index) => {
