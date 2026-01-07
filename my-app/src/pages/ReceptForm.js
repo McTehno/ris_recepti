@@ -1,33 +1,36 @@
 import React, { use, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import api from "../services/api"; 
+import api from "../services/api";
 
 function ReceptForm() {
   const userId = sessionStorage.getItem('userId');
   const { id } = useParams(userId); //ako ima id togas edit, ako ne ustvari
   const navigate = useNavigate();
 
- 
+
   const [recept, setRecept] = useState({
-      ime: "",
-      tip: "",
-      priprava: "",
-      st_porcij: 1,
-      sestavine: [{ ime: "", kolicina: 0, enota: "" }],
-      hranilneVrednosti: [
-        { energija: 0, bjelankovine: 0, ogljikoviHidrati: 0, mascobe: 0 }
-      ]
+    ime: "",
+    tip: "",
+    priprava: "",
+    st_porcij: 1,
+    sestavine: [{ ime: "", kolicina: 0, enota: "" }],
+    hranilneVrednosti: {
+      energija: 0,
+      bjelankovine: 0,
+      ogljikoviHidrati: 0,
+      mascobe: 0
+    }
   });
 
 
   useEffect(() => {
-  if (!userId) {
+    if (!userId) {
       navigate('/login');
       return;
     }
   }, [userId, navigate]);
-  
+
   useEffect(() => {
     if (id) {
       // Ako e edit, povikaj postoecki podatoci
@@ -57,33 +60,39 @@ function ReceptForm() {
       setRecept({ ...recept, [name]: value });
     }
   };
-  const handleChangeHranilne = (e, index) => {
+  const handleChangeHranilne = (e) => {
     const { name, value } = e.target;
-    const novaHranilna = [...recept.hranilneVrednosti];
-    novaHranilna[index][name] = Number(value); // сите вредности се броеви
-    setRecept({ ...recept, hranilneVrednosti: novaHranilna });
+
+    setRecept({
+      ...recept,
+      hranilneVrednosti: {
+        ...recept.hranilneVrednosti,
+        [name]: value
+      }
+    });
   };
+
 
   const handleAddSestavina = () => {
     setRecept({ ...recept, sestavine: [...recept.sestavine, { ime: "", kolicina: 0, enota: "" }] });
   };
 
   // Funkcija za brisenje edna sostojka
-const handleRemoveSestavina = (index) => {
-  // Se ustvarja nova lista z sestavine, brez tisto ki jo brisemo
-  const novaListaSestavini = recept.sestavine.filter((sestavina, i) => i !== index);
-  
-  // Go updejtam stejtot na receptite so novata lista na sostojki
-  setRecept({ 
-    ...recept, 
-    sestavine: novaListaSestavini 
-  });
-};
+  const handleRemoveSestavina = (index) => {
+    // Se ustvarja nova lista z sestavine, brez tisto ki jo brisemo
+    const novaListaSestavini = recept.sestavine.filter((sestavina, i) => i !== index);
+
+    // Go updejtam stejtot na receptite so novata lista na sostojki
+    setRecept({
+      ...recept,
+      sestavine: novaListaSestavini
+    });
+  };
 
 
   const handleSubmit = (e) => {
-  e.preventDefault();
-  const ocisceneSestavine = recept.sestavine.map(sestavina => {
+    e.preventDefault();
+    const ocisceneSestavine = recept.sestavine.map(sestavina => {
       return {
         id: sestavina.id, // Id ohranimo za urejanje
         ime: sestavina.ime,
@@ -93,16 +102,16 @@ const handleRemoveSestavina = (index) => {
       };
     });
     if (ocisceneSestavine.length === 0) {
-    alert("Sestavine so obvezni!");
-    return; 
-  }
+      alert("Sestavine so obvezni!");
+      return;
+    }
 
-  if (recept.st_porcij < 1) {
-    alert("Število porcij mora biti vsaj 1!");
-    return;
-  }
+    if (recept.st_porcij < 1) {
+      alert("Število porcij mora biti vsaj 1!");
+      return;
+    }
 
-  const receptZaPosiljanje = {
+    const receptZaPosiljanje = {
       ime: recept.ime,
       tip: recept.tip,
       priprava: recept.priprava,
@@ -112,18 +121,18 @@ const handleRemoveSestavina = (index) => {
       uporabnik: { id: userId }
     };
 
-  if (id) {
-    //pri submit  da se promeni receptot i da ne vrati na moji recepti
-     api.put(`/recepti/${id}`, receptZaPosiljanje)
-      .then(() => navigate("/moji-recepti"))
-      .catch(err => console.error(err));
-  } else {
-    // da se ustvari nov recept
-    api.post("/recepti/post", receptZaPosiljanje)
-      .then(() => navigate("/moji-recepti"))
-      .catch(err => console.error(err));
-  }
-};
+    if (id) {
+      //pri submit  da se promeni receptot i da ne vrati na moji recepti
+      api.put(`/recepti/${id}`, receptZaPosiljanje)
+        .then(() => navigate("/moji-recepti"))
+        .catch(err => console.error(err));
+    } else {
+      // da se ustvari nov recept
+      api.post("/recepti/post", receptZaPosiljanje)
+        .then(() => navigate("/moji-recepti"))
+        .catch(err => console.error(err));
+    }
+  };
 
 
   return (
@@ -179,53 +188,51 @@ const handleRemoveSestavina = (index) => {
         <br /><br />
 
         <h3>Hranilne vrednosti</h3>
-          <div style={{ marginBottom: "5px" }}>
-            <label>Energija (kcal):</label>
-            <input
-              type="number"
-              name="energija"
-              placeholder="Energija"
-              value={recept.hranilneVrednosti[0].energija}
-              onChange={(e) => handleChangeHranilne(e, 0)}
-              required
-            />
-          </div>
 
-          <div style={{ marginBottom: "5px" }}>
-            <label>Beljakovine (g):</label>
-            <input
-              type="number"
-              name="bjelankovine"
-              placeholder="Beljakovine"
-              value={recept.hranilneVrednosti[0].bjelankovine}
-              onChange={(e) => handleChangeHranilne(e, 0)}
-              required
-            />
-          </div>
+        <div>
+          <label>Energija (kcal):</label>
+          <input
+            type="number"
+            name="energija"
+            value={recept.hranilneVrednosti.energija}
+            onChange={handleChangeHranilne}
+            required
+          />
+        </div>
 
-          <div style={{ marginBottom: "5px" }}>
-            <label>Ogljikovi hidrati (g):</label>
-            <input
-              type="number"
-              name="ogljikoviHidrati"
-              placeholder="Ogljikovi hidrati"
-              value={recept.hranilneVrednosti[0].ogljikoviHidrati}
-              onChange={(e) => handleChangeHranilne(e, 0)}
-              required
-            />
-          </div>
+        <div>
+          <label>Beljakovine (g):</label>
+          <input
+            type="number"
+            name="bjelankovine"
+            value={recept.hranilneVrednosti.bjelankovine}
+            onChange={handleChangeHranilne}
+            required
+          />
+        </div>
 
-          <div style={{ marginBottom: "5px" }}>
-            <label>Maščobe (g):</label>
-            <input
-                type="number"
-                name="mascobe"
-                placeholder="Maščobe"
-                value={recept.hranilneVrednosti[0].mascobe}
-                onChange={(e) => handleChangeHranilne(e, 0)}
-                required
-            />
-          </div>
+        <div>
+          <label>Ogljikovi hidrati (g):</label>
+          <input
+            type="number"
+            name="ogljikoviHidrati"
+            value={recept.hranilneVrednosti.ogljikoviHidrati}
+            onChange={handleChangeHranilne}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Maščobe (g):</label>
+          <input
+            type="number"
+            name="mascobe"
+            value={recept.hranilneVrednosti.mascobe}
+            onChange={handleChangeHranilne}
+            required
+          />
+        </div>
+
 
 
 
