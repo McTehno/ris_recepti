@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -36,6 +38,8 @@ public class Recept {
     @JoinColumn(name = "uporabnik_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker uporabnik vsebuje objekt tipa recept
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude//prespreci zapis neskoncne zankepri testih
     private Uporabnik uporabnik;
 
 
@@ -46,14 +50,20 @@ public class Recept {
 
     @OneToMany(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("recepti") //da se izognemo infinite loopu ker sestavina vsebuje objekt tipa recept
+    @ToString.Exclude//prespreci zapis neskoncne zankepri testih
+    @EqualsAndHashCode.Exclude
     private List<Sestavina> sestavine;
 
     @OneToMany(mappedBy = "recept", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("recept") // Prepreci zanko nazaj na recept
+    @ToString.Exclude//prespreci zapis neskoncne zankepri testih
+    @EqualsAndHashCode.Exclude
     private List<Ocena> ocene;
 
     @OneToOne(mappedBy = "recept", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("recept")
+    @ToString.Exclude//prespreci zapis neskoncne zankepri testih
+    @EqualsAndHashCode.Exclude
     private HranilneVrednosti hranilneVrednosti;
 
 

@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -34,6 +34,8 @@ public class Ocena {
     @JoinColumn(name = "recept_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties("ocene") // Preprecimo neskončno zanko
+    @ToString.Exclude//prespreci zapis neskoncne zankepri testih
+    @EqualsAndHashCode.Exclude
     private Recept recept;
 
     // Povezava do uporabnika, ki je podal oceno

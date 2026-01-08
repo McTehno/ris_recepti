@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,6 +28,8 @@ public class HranilneVrednosti {
     @OneToOne
     @JoinColumn(name = "recept_id")
     @JsonIgnoreProperties("hranilneVrednosti")
+    @ToString.Exclude//prespreci zapis neskoncne zankepri testih
+    @EqualsAndHashCode.Exclude
     private Recept recept;
 
 }
