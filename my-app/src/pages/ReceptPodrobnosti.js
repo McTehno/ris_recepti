@@ -241,7 +241,7 @@ const handlePorcijeChange = (e) => {
       <Komentarji receptId={id} />
 
 
-      <IzvozButton recept={recept} sestavine={sestavine} st_porcij={porcije} />
+      <IzvozButton recept={recept} sestavine={sestavine} st_porcij={porcije} hranilneVrednosti={hranilneVrednosti} />
     </div>
   );
 }
