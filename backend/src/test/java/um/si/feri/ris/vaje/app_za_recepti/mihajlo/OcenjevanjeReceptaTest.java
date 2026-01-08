@@ -9,6 +9,7 @@ import um.si.feri.ris.vaje.app_za_recepti.controllers.OcenaController;
 import um.si.feri.ris.vaje.app_za_recepti.dao.OcenaRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Ocena;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -51,6 +52,15 @@ public class OcenjevanjeReceptaTest {
         recept.setTip("Glavna jed");
         recept.setPriprava("Kuhaj malo");
         recept.setPovprecnaOcena(0.0);
+
+        HranilneVrednosti hv = new HranilneVrednosti();
+        hv.setEnergija(400);
+        hv.setBjelankovine(20);
+        hv.setOgljikoviHidrati(30);
+        hv.setMascobe(10);
+        hv.setRecept(recept);
+        recept.setHranilneVrednosti(hv);
+
         receptRepository.save(recept);
     }
 

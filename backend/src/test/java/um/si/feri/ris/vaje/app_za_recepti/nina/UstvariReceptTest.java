@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import um.si.feri.ris.vaje.app_za_recepti.controllers.ReceptController;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -51,6 +52,15 @@ public class UstvariReceptTest {
         testRecept.setTip("Sladok");
         testRecept.setPriprava("Priprava testnega recepta");
         testRecept.setUporabnik(testUporabnik);
+
+        HranilneVrednosti hv = new HranilneVrednosti();
+        hv.setEnergija(100);
+        hv.setBjelankovine(10);
+        hv.setOgljikoviHidrati(20);
+        hv.setMascobe(5);
+        hv.setRecept(testRecept);
+        testRecept.setHranilneVrednosti(hv);
+
         // Dodajanje dveh sestavin
         Sestavina s1 = new Sestavina();
         s1.setIme("Moka");
@@ -103,6 +113,14 @@ public class UstvariReceptTest {
         Recept saved = receptController.createRecept(testRecept);
         assertEquals(saved, saved.getSestavine().get(0).getRecept());
         assertEquals(saved, saved.getSestavine().get(1).getRecept());
+    }
+
+    @Test
+    void testCreateRecept_HranilneVrednostiSaved() {
+        Recept saved = receptController.createRecept(testRecept);
+        assertNotNull(saved.getHranilneVrednosti());
+        assertEquals(100, saved.getHranilneVrednosti().getEnergija());
+        assertEquals(saved, saved.getHranilneVrednosti().getRecept());
     }
 
     // Negativni scenarij: preverja, ali metoda ne dovoli ustvariti recepta brez sestavin

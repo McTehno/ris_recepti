@@ -9,6 +9,7 @@ import um.si.feri.ris.vaje.app_za_recepti.controllers.OcenaController;
 import um.si.feri.ris.vaje.app_za_recepti.dao.OcenaRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Ocena;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -49,6 +50,15 @@ public class PridobiOcenoTest {
         recept.setTip("Sladica");
         recept.setPriprava("Peci 20 min");
         recept.setPovprecnaOcena(0.0);
+
+        HranilneVrednosti hv = new HranilneVrednosti();
+        hv.setEnergija(300);
+        hv.setBjelankovine(10);
+        hv.setOgljikoviHidrati(40);
+        hv.setMascobe(15);
+        hv.setRecept(recept);
+        recept.setHranilneVrednosti(hv);
+
         receptRepository.save(recept);
     }
 

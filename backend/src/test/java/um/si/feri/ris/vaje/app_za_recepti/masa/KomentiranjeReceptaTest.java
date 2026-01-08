@@ -10,6 +10,7 @@ import um.si.feri.ris.vaje.app_za_recepti.controllers.KomentarController;
 import um.si.feri.ris.vaje.app_za_recepti.dao.KomentarRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -54,6 +55,14 @@ public class KomentiranjeReceptaTest {
         recept.setTip("test1Tip");
         recept.setPriprava("test1Priprava");
         recept.setPovprecnaOcena(0.0);
+
+        HranilneVrednosti hv = new HranilneVrednosti();
+        hv.setEnergija(500);
+        hv.setBjelankovine(30);
+        hv.setOgljikoviHidrati(50);
+        hv.setMascobe(20);
+        hv.setRecept(recept);
+        recept.setHranilneVrednosti(hv);
 
         Sestavina sestavina = new Sestavina();
         sestavina.setIme("test1");

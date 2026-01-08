@@ -56,12 +56,14 @@ public class ReceptController {
             return null;
         }
 
-        // povezujem sestavine z recept
+        recept.getHranilneVrednosti().setRecept(recept);
+
+        // povezujem sestavine z receptom
         for (Sestavina s : recept.getSestavine()) {
             s.setRecept(recept);
         }
 
-        // povezujem hranilne vrednosti z recept
+        // povezujem hranilne vrednosti z receptom
         recept.getHranilneVrednosti().setRecept(recept);
 
         return receptRepository.save(recept);
@@ -75,50 +77,7 @@ public class ReceptController {
         Optional<Recept> recept = receptRepository.findById(id);
         return recept.orElse(null);
     }
-
-    /*
-    @PutMapping("/{id}")
-    @Transactional
-    public Recept updateRecept(@PathVariable Long id, @RequestBody Recept noviPodatki) {
-        //naogajne na receptot preku id
-        Optional<Recept> receptOptional = receptRepository.findById(id);
-
-        if (receptOptional.isPresent()) {
-            Recept recept = receptOptional.get();
-
-            if (noviPodatki.getSt_porcij() < 1) {
-                return null;
-            }
-
-            recept.setIme(noviPodatki.getIme());
-            recept.setPriprava(noviPodatki.getPriprava());
-            recept.setTip(noviPodatki.getTip());
-            recept.setSt_porcij(noviPodatki.getSt_porcij());
-
-            //ako sostojki ne se podadeni da se inicijaliziret
-            if (recept.getSestavine() == null) {
-                recept.setSestavine(new ArrayList<>());
-            } else {
-                //gi brise postoeckite
-                recept.getSestavine().clear();
-            }
-            //sekoja sostojka se povrzuva so recept, i na receptot se dodava
-            if (noviPodatki.getSestavine() != null) {
-                for (Sestavina s : noviPodatki.getSestavine()) {
-                    s.setRecept(recept);
-                    recept.getSestavine().add(s);
-                }
-            }
-            //go zacuvuva receptot
-            return receptRepository.save(recept);
-        } else {
-            return null;
-        }
-    }
-
-    */
-
-
+    // Posodabljanje recepta
     @PutMapping("/{id}")
     @Transactional
     public Recept updateRecept(@PathVariable Long id, @RequestBody Recept noviPodatki) {
@@ -136,7 +95,6 @@ public class ReceptController {
             recept.setTip(noviPodatki.getTip());
             recept.setSt_porcij(noviPodatki.getSt_porcij());
 
-            // ---------- Sestavine----------
             if (recept.getSestavine() == null) {
                 recept.setSestavine(new ArrayList<>());
             } else {
@@ -148,8 +106,7 @@ public class ReceptController {
                     recept.getSestavine().add(s);
                 }
             }
-
-            // ---------- Hranilne Vrednosti ----------
+            // Dodal sem se del za hranilne vrednosti
             if (noviPodatki.getHranilneVrednosti() != null) {
                 noviPodatki.getHranilneVrednosti().setRecept(recept);
                 recept.setHranilneVrednosti(noviPodatki.getHranilneVrednosti());

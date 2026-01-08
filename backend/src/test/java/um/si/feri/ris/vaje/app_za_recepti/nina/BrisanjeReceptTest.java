@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import um.si.feri.ris.vaje.app_za_recepti.controllers.ReceptController;
 import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.HranilneVrednosti;
 import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
 import um.si.feri.ris.vaje.app_za_recepti.models.Sestavina;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
@@ -55,6 +56,14 @@ public class BrisanjeReceptTest {
         newRecept.setPriprava("Priprava testnega recepta.");
         newRecept.setUporabnik(u);
         newRecept.setPovprecnaOcena(0.0);
+
+        HranilneVrednosti hv = new HranilneVrednosti();
+        hv.setEnergija(200);
+        hv.setBjelankovine(15);
+        hv.setOgljikoviHidrati(25);
+        hv.setMascobe(10);
+        hv.setRecept(newRecept);
+        newRecept.setHranilneVrednosti(hv);
 
         // Dodajanje ene sestavine
         Sestavina s = new Sestavina();
