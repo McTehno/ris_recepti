@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import api from "../services/api";
 import Komentarji from "./Komentarji";
-import IzvozButton from "./IzvozButton"; 
+import IzvozButton from "./IzvozButton";
 
 function ReceptPodrobnosti() {
   const { id } = useParams();// id recepta
@@ -33,11 +33,11 @@ function ReceptPodrobnosti() {
     // Povik za sastojkite
     api.get(`/sestavine/recept/${id}`)
       .then(response => {
-        setSestavine(response.data); 
+        setSestavine(response.data);
         setSestavineOriginal(response.data);
       })
       .catch(err => console.error("Greska pri dobivanje na sostojki:", err));
-    
+
     // za hranilne vrednosti glede na id recepta
     api.get(`/hranilne-vrednosti/recept/${id}`)
       .then(response => {
@@ -48,22 +48,37 @@ function ReceptPodrobnosti() {
 
   }, [id]);
 
+  //ZA PRIKAZ ODSTOTEK OD DNEVNEGA CILJA
+  const dnevniCilji = {
+    kalorije: 2250,       // kcal
+    beljakovine: 75,      // g
+    ogljikoviHidrati: 225,// g
+    mascobe: 75           // g
+  };
+
+  const izracunajOdstotek = (vrednost, cilj) => {
+    if (!vrednost || !cilj) return 0;
+    return ((vrednost / cilj) * 100).toFixed(1); //na 1 decimalka
+  };
+
+
+
   // ko dobimo recept in imamo userId, preverimo dodatne pogoje (avtor ali ocena)
   useEffect(() => {
     if (recept && userId) {
-        if (recept.uporabnik && recept.uporabnik.id === parseInt(userId)) {
-            setJeAvtor(true);
-        } else {
-          preveriMojoOceno();
-        }
+      if (recept.uporabnik && recept.uporabnik.id === parseInt(userId)) {
+        setJeAvtor(true);
+      } else {
+        preveriMojoOceno();
+      }
     }
   }, [recept, userId]);
 
-    useEffect(() => {
-      if (recept) {
-        setPorcije(recept.st_porcij);
-      }
-    }, [recept]);
+  useEffect(() => {
+    if (recept) {
+      setPorcije(recept.st_porcij);
+    }
+  }, [recept]);
 
 
   const fetchRecept = () => {
@@ -74,13 +89,13 @@ function ReceptPodrobnosti() {
 
   // preverjanje ce je uporabnik ze ocenil ta recept
   const preveriMojoOceno = () => {
-      api.get(`/ocene/recept/${id}/uporabnik/${userId}`)
-        .then(res => {
-            if (res.data > 0) {
-                setMojaOcena(res.data); // nastavi zvezdice na obstoječo oceno
-            }
-        })
-        .catch(err => console.error("Napaka pri preverjanju ocene", err));
+    api.get(`/ocene/recept/${id}/uporabnik/${userId}`)
+      .then(res => {
+        if (res.data > 0) {
+          setMojaOcena(res.data); // nastavi zvezdice na obstoječo oceno
+        }
+      })
+      .catch(err => console.error("Napaka pri preverjanju ocene", err));
   };
 
   // funkcija za prikaz toasta
@@ -95,36 +110,36 @@ function ReceptPodrobnosti() {
 
   //Handler za spreminjanje input polja za st porcije
 
-const handlePorcijeChange = (e) => {
-  const novaVrednost = Number(e.target.value);
+  const handlePorcijeChange = (e) => {
+    const novaVrednost = Number(e.target.value);
 
-  if (novaVrednost < 1)
-     return; 
-
-  
-  const faktor = novaVrednost / recept.st_porcij;
+    if (novaVrednost < 1)
+      return;
 
 
-  const noveSestavine = sestavineOriginal.map(s => ({
-    ...s,
-    kolicina: Math.round(s.kolicina * faktor) // цел број
-  }));
+    const faktor = novaVrednost / recept.st_porcij;
 
-  setPorcije(novaVrednost);
-  setSestavine(noveSestavine);
 
-  if (hranilneVrednostiOriginal) {//pogoj da se ne sesuje če se ne pridobi hranilnih vrednosti
-    const noveHranilneVrednosti = {
-      ...hranilneVrednostiOriginal, 
-      energija: Math.round(hranilneVrednostiOriginal.energija * faktor),
-      bjelankovine: Math.round(hranilneVrednostiOriginal.bjelankovine * faktor),
-      ogljikoviHidrati: Math.round(hranilneVrednostiOriginal.ogljikoviHidrati * faktor),
-      mascobe: Math.round(hranilneVrednostiOriginal.mascobe * faktor)
-    };
-    setHranilneVrednosti(noveHranilneVrednosti);
-  }
-  
-};
+    const noveSestavine = sestavineOriginal.map(s => ({
+      ...s,
+      kolicina: Math.round(s.kolicina * faktor) // цел број
+    }));
+
+    setPorcije(novaVrednost);
+    setSestavine(noveSestavine);
+
+    if (hranilneVrednostiOriginal) {//pogoj da se ne sesuje če se ne pridobi hranilnih vrednosti
+      const noveHranilneVrednosti = {
+        ...hranilneVrednostiOriginal,
+        energija: Math.round(hranilneVrednostiOriginal.energija * faktor),
+        bjelankovine: Math.round(hranilneVrednostiOriginal.bjelankovine * faktor),
+        ogljikoviHidrati: Math.round(hranilneVrednostiOriginal.ogljikoviHidrati * faktor),
+        mascobe: Math.round(hranilneVrednostiOriginal.mascobe * faktor)
+      };
+      setHranilneVrednosti(noveHranilneVrednosti);
+    }
+
+  };
 
 
 
@@ -138,13 +153,13 @@ const handlePorcijeChange = (e) => {
       return;
     }
     if (jeAvtor) {
-        setSporocilo("Svojega recepta ne morete oceniti.");
-        return;
+      setSporocilo("Svojega recepta ne morete oceniti.");
+      return;
     }
 
     const zahtevaZaOceno = {
       vrednost: mojaOcena,
-      uporabnikId: parseInt(userId) 
+      uporabnikId: parseInt(userId)
     };
 
     try {
@@ -154,7 +169,7 @@ const handlePorcijeChange = (e) => {
     } catch (error) {
       console.error("Napaka pri oddaji ocene:", error);
       if (error.response && error.response.data) {
-          console.log("Backend error:", error.response.data);// Prikaz specifične napake iz backend-a i love
+        console.log("Backend error:", error.response.data);// Prikaz specifične napake iz backend-a i love
       }
       prikaziObvestilo("Napaka pri oddaji ocene.", "error");
     }
@@ -177,7 +192,7 @@ const handlePorcijeChange = (e) => {
       <p><strong>Tip:</strong> {recept.tip}</p>
 
       <label><strong>Število porcij:</strong></label>
-      <input type="number" min="1" value={porcije} onChange={handlePorcijeChange}/>
+      <input type="number" min="1" value={porcije} onChange={handlePorcijeChange} />
       <p><strong>Ocena:</strong> {recept.povprecnaOcena ? recept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
       <p><strong>Priprava:</strong> {recept.priprava}</p>
       <p><strong>Uporabnik:</strong>{recept.uporabnik ? `${recept.uporabnik.ime} ${recept.uporabnik.priimek}` : "Neznan avtor"}</p>
@@ -192,33 +207,48 @@ const handlePorcijeChange = (e) => {
       ) : (
         <p>Nima sestavine za recept: {recept.ime}.</p>
       )}
+
       <h3>Hranilne vrednosti</h3>
       {hranilneVrednosti ? (
         <ul key={hranilneVrednosti.id}>
-          <li>Energijska vrednost :{hranilneVrednosti.energija} (kcal)</li>
-          <li>Beljakovine: {hranilneVrednosti.bjelankovine} (g)</li>
-          <li>Ogljikovi hidrati: {hranilneVrednosti.ogljikoviHidrati} (g)</li>
-          <li>Mascobe: {hranilneVrednosti.mascobe} (g)</li>
+          <li>
+            Energijska vrednost: {hranilneVrednosti.energija} kcal
+            ({izracunajOdstotek(hranilneVrednosti.energija, dnevniCilji.kalorije)}% dnevnega vnosa)
+          </li>
+          <li>
+            Beljakovine: {hranilneVrednosti.bjelankovine} g
+            ({izracunajOdstotek(hranilneVrednosti.bjelankovine, dnevniCilji.beljakovine)}% dnevnega vnosa)
+          </li>
+          <li>
+            Ogljikovi hidrati: {hranilneVrednosti.ogljikoviHidrati} g
+            ({izracunajOdstotek(hranilneVrednosti.ogljikoviHidrati, dnevniCilji.ogljikoviHidrati)}% dnevnega vnosa)
+          </li>
+          <li>
+            Mascobe: {hranilneVrednosti.mascobe} g
+            ({izracunajOdstotek(hranilneVrednosti.mascobe, dnevniCilji.mascobe)}% dnevnega vnosa)
+          </li>
         </ul>
-      ):(<p>Recept ({recept.ime}) nima vnesenih hranilnih vrednosti</p>)
-      }
+      ) : (
+        <p>Recept ({recept.ime}) nima vnesenih hranilnih vrednosti</p>
+      )}
+
       {!jeAvtor && (
-      <div className="rating-wrapper">
+        <div className="rating-wrapper">
           <div className="rating-stars">
             {[...Array(5)].map((star, index) => {
               const ratingValue = index + 1;
               return (
                 <label key={index}>
-                  <input 
-                    type="radio" 
-                    name="rating" 
-                    value={ratingValue} 
+                  <input
+                    type="radio"
+                    name="rating"
+                    value={ratingValue}
                     onClick={() => setMojaOcena(ratingValue)}
                     style={{ display: 'none' }}
                   />
-                  <span 
-                    className="star" 
-                    style={{ 
+                  <span
+                    className="star"
+                    style={{
                       color: ratingValue <= (hover || mojaOcena) ? "#ffc107" : "#e4e5e9"
                     }}
                     onMouseEnter={() => setHover(ratingValue)}
@@ -230,7 +260,7 @@ const handlePorcijeChange = (e) => {
               );
             })}
           </div>
-          
+
           <button className="btn-rate-submit" onClick={oddajOceno}>
             Oddaj oceno
           </button>
