@@ -114,7 +114,53 @@ public class UporabnikController {
 
         return ResponseEntity.ok("Recept dodan v seznam priljubljenih");
     }
+    //Unlike recept
+    @DeleteMapping("/{userId}/like/{receptId}")
+    public ResponseEntity<String> unlikeRecept(@PathVariable Long userId,
+                                               @PathVariable Long receptId) {
 
+        Optional<Uporabnik> uporabnikOpt = uporabnikRepository.findById(userId);
+        if (uporabnikOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Uporabnik ne obstaja");
+        }
+
+        Optional<Recept> receptOpt = receptRepository.findById(receptId);
+        if (receptOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Recept ne obstaja");
+        }
+
+        Uporabnik u = uporabnikOpt.get();
+        Recept r = receptOpt.get();
+
+        if (!u.getLikedRecepti().contains(r)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Recept ni v seznam priljubljenih");
+        }
+
+        u.getLikedRecepti().remove(r);
+        uporabnikRepository.save(u);
+
+        return ResponseEntity.ok("Recept odstranjen iz seznama priljubljenih");
+    }
+    //pridobitev vseh priljubljenih receptov uporabnika
+    @GetMapping("/{userId}/liked")
+    public ResponseEntity<?> getLikedRecepti(@PathVariable Long userId) {
+        Optional<Uporabnik> uporabnikOpt = uporabnikRepository.findById(userId);
+        if (uporabnikOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Uporabnik ne obstaja");
+        }
+
+        Set<Recept> likedRecepti = uporabnikOpt.get().getLikedRecepti();
+
+        if (likedRecepti.isEmpty()) {
+            return ResponseEntity.ok("Uporabnik nima priljubljeni recepti");
+        }
+
+        return ResponseEntity.ok(likedRecepti);
+    }
 
 
 }
