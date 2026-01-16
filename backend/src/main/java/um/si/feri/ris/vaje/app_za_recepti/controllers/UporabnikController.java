@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import um.si.feri.ris.vaje.app_za_recepti.dao.UporabnikRepository;
 import um.si.feri.ris.vaje.app_za_recepti.models.Uporabnik;
 
+
+import um.si.feri.ris.vaje.app_za_recepti.dao.ReceptRepository;
+import um.si.feri.ris.vaje.app_za_recepti.models.Recept;
+import java.util.Set;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +25,11 @@ public class UporabnikController {
     @Autowired
 
     private UporabnikRepository uporabnikRepository;
+
+    //Dodam za vseckanje
+    @Autowired
+    private ReceptRepository receptRepository;
+
 
     // Kreiram korisnik i vrakam Korisnik koj e kreiran
     @PostMapping("/post")
@@ -77,4 +87,34 @@ public class UporabnikController {
     public void deleteUporabnik(@PathVariable Long id) {
         uporabnikRepository.deleteById(id);
     }
+
+
+    // Like recept
+    @PostMapping("/{userId}/like/{receptId}")
+    public ResponseEntity<String> likeRecept(@PathVariable Long userId,
+                                             @PathVariable Long receptId) {
+
+        Optional<Uporabnik> uporabnikOpt = uporabnikRepository.findById(userId);
+        if (uporabnikOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Uporabnik ne obstaja");
+        }
+
+        Optional<Recept> receptOpt = receptRepository.findById(receptId);
+        if (receptOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Recept ne obstaja");
+        }
+
+        Uporabnik u = uporabnikOpt.get();
+        Recept r = receptOpt.get();
+
+        u.getLikedRecepti().add(r);
+        uporabnikRepository.save(u);
+
+        return ResponseEntity.ok("Recept dodan v seznam priljubljenih");
+    }
+
+
+
 }
