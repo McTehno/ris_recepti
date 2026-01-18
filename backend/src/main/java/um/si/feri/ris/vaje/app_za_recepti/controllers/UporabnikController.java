@@ -156,7 +156,7 @@ public class UporabnikController {
         Set<Recept> likedRecepti = uporabnikOpt.get().getLikedRecepti();
 
         if (likedRecepti.isEmpty()) {
-            return ResponseEntity.ok("Uporabnik nima priljubljeni recepti");
+            return ResponseEntity.ok(List.of());
         }
 
         return ResponseEntity.ok(likedRecepti);

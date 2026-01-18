@@ -1,18 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api"; 
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { IconButton } from '@mui/material';
 
 
 function VsiRecepti() {
   const [recepti, setRecepti] = useState([]);
 
   const [search, setSearch] = useState("");
+  const [likedRecipes, setLikedRecipes] = useState(new Set());
+  const currentUserId = sessionStorage.getItem('userId');
+
+  const fetchLikedRecipes = async () => {
+      if (!currentUserId) return;
+      try {
+          const response = await api.get(`/uporabniki/${currentUserId}/liked`);
+          // backend uporablja seznam receptov, samo pa rabimo id-je
+          if (Array.isArray(response.data)) {
+              setLikedRecipes(new Set(response.data.map(r => r.id)));
+          }
+      } catch (error) {
+          console.error("napaka pri fetch-anju receptov:", error);
+      }
+  };
+
+  const handleLike = async (receptId) => {
+      if (!currentUserId) {
+          alert("Za všečkanje se morate prijaviti!");
+          return;
+      }
+
+      const isLiked = likedRecipes.has(receptId);
+      
+      try {
+          if (isLiked) {
+              await api.delete(`/uporabniki/${currentUserId}/like/${receptId}`);
+              setLikedRecipes(prev => {
+                  const newSet = new Set(prev);
+                  newSet.delete(receptId);
+                  return newSet;
+              });
+          } else {
+              await api.post(`/uporabniki/${currentUserId}/like/${receptId}`);
+              setLikedRecipes(prev => new Set(prev).add(receptId));
+          }
+      } catch (error) {
+          console.error("napaka pri toggle-janju like:", error);
+      }
+  };
 
 
   useEffect(() => {
     api.get("http://localhost:8180/api/recepti")
-      .then(response => setRecepti(response.data))
-      .catch(error => console.error(error));
+      .then(response => {
+        setRecepti(response.data);
+        fetchLikedRecipes();
+      })
+      .catch(error => console.error("napaka pri fetch-anju receptov:", error));
   }, []);
 
   
@@ -36,7 +82,7 @@ function VsiRecepti() {
       // Povikaj endpoint za prebaruvanje po ime
       api.get(`http://localhost:8180/api/recepti/ime/${search}`)
         .then(response => setRecepti(response.data))
-        .catch(err => console.error(err));
+        .catch(err => console.error("napaka pri fetch-anju receptov:", err));
     }
   }}>Išči</button>
 </div>
@@ -59,6 +105,15 @@ function VsiRecepti() {
         <p><strong>Tip:</strong> {recept.tip}</p>
         <p><strong>Porcij:</strong> {recept.st_porcij}</p>
         
+        { (!recept.uporabnik || String(recept.uporabnik.id) !== String(currentUserId)) && (
+          //to bo tudi preverilo ce uporabnik gleda svoj recept, da ne more vseckat svojega recepta
+             <IconButton 
+                onClick={() => handleLike(recept.id)} 
+                sx={{ position: 'absolute', bottom: 8, right: 8, color: 'red' }}
+             >
+                {likedRecipes.has(recept.id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+             </IconButton>
+        )}
       </div>
     ))
   ) : (
