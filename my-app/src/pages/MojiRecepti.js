@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Dodan useNavigate za preusmeritev, če ni prijave
 import api from "../services/api";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { IconButton } from '@mui/material';
 
 function MojiRecepti() {
   const [recepti, setRecepti] = useState([]);
+  const [likedRecepti, setLikedRecepti] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -22,6 +25,12 @@ function MojiRecepti() {
     api.get(`/recepti/uporabnik/${userId}`) // Uporabimo dinamičen userId
       .then(res => setRecepti(res.data))
       .catch(err => console.error("Napaka pri pridobivanju receptov:", err));
+
+    //dodan fetch za likedRecepte uporabnika
+    api.get(`/uporabniki/${userId}/liked`)
+      .then(res => setLikedRecepti(res.data))
+      .catch(err => console.error("Napaka pri pridobivanju vseckanih receptov:", err));
+
   }, [userId, navigate]); // userId in navigate dodamo v dependency array
 
 
@@ -31,6 +40,14 @@ function MojiRecepti() {
         .then(() => setRecepti(recepti.filter(r => r.id !== id)))
         .catch(err => console.error(err));
     }
+  };
+
+  const handleUnlike = (receptId) => {
+    api.delete(`/uporabniki/${userId}/like/${receptId}`)
+      .then(() => {
+        setLikedRecepti(likedRecepti.filter(r => r.id !== receptId));
+      })
+      .catch(err => console.error("Napaka pri odstranjevanju like-a:", err));
   };
 
   const handleSearch = () => {
@@ -58,7 +75,32 @@ function MojiRecepti() {
         />
         <button onClick={handleSearch}>Išči</button> 
       </div>
-
+    <div className="moji-recepti-container">
+      <h2>Všečkani recepti</h2>
+      {likedRecepti.length === 0 ? (
+        <p>Ni vseckanih receptov za prikaz...</p>
+      ) : (
+        <div className="cards-container">
+          {likedRecepti.map((likedRecept) => (
+            <div key={likedRecept.id} className="card" style={{ position: 'relative' }}>
+                <h5 className="recept-link">
+                <Link to={`/recept/${likedRecept.id}`}>{likedRecept.ime}</Link>
+                </h5>
+                <p><strong>Datum:</strong> {likedRecept.datumUstvarjanja}</p>
+                <p><strong>Tip:</strong> {likedRecept.tip}</p>
+                <p><strong>Porcij:</strong> {likedRecept.st_porcij}</p>
+                <p><strong>Ocena:</strong> {likedRecept.povprecnaOcena ? likedRecept.povprecnaOcena.toFixed(1) : "Brez ocen"}</p>
+                 <IconButton 
+                    onClick={() => handleUnlike(likedRecept.id)} 
+                    sx={{ position: 'absolute', bottom: 8, right: 8, color: 'red' }}
+                 >
+                    <FavoriteIcon />
+                 </IconButton>
+            </div>
+            ))}
+        </div>
+      )}
+    </div>
     <div className="moji-recepti-container">
       <h2>Moji recepti</h2>
       {recepti.length === 0 ? (
